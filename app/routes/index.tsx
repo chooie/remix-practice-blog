@@ -7,24 +7,14 @@ export default function Index() {
       <h1>Welcome to Charlie's Blog</h1>
 
       <Wrapper>
-        <CoolLink to="/posts">Check out all the Posts</CoolLink>
-        <UnderLine />
+        <CoolLink to="/posts">
+          Check out all the Posts
+          <UnderLine />
+        </CoolLink>
       </Wrapper>
     </div>
   );
 }
-
-const UnderLine = styled.div`
-  opacity: 0;
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  height: 5px;
-  width: 100%;
-  background: var(--cool-color);
-
-  transition: opacity 500ms;
-`;
 
 const Wrapper = styled.div`
   --cool-color: linear-gradient(
@@ -38,10 +28,18 @@ const Wrapper = styled.div`
 
   display: flex;
   flex-direction: column;
+`;
 
-  &:hover ${UnderLine} {
-    opacity: 1;
-  }
+const UnderLine = styled.div`
+  opacity: 0;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 5px;
+  width: 100%;
+  background: var(--cool-color);
+
+  transition: opacity 500ms;
 `;
 
 const CoolLink = styled(Link)`
@@ -64,4 +62,12 @@ const CoolLink = styled(Link)`
   background-clip: text;
   -webkit-text-fill-color: transparent;
   -moz-text-fill-color: transparent;
+
+  &:hover {
+    text-decoration: none;
+  }
+
+  &:hover ${UnderLine} {
+    opacity: 1;
+  }
 `;

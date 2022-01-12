@@ -1,3 +1,5 @@
+import React, { useEffect } from "react";
+import { Transition } from "@remix-run/react/transition";
 import {
   Link,
   Links,
@@ -6,6 +8,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useTransition,
 } from "remix";
 import type { MetaFunction } from "remix";
 import styled from "styled-components";
@@ -17,6 +20,8 @@ export const meta: MetaFunction = () => {
 };
 
 export default function App() {
+  const transition: Transition = useTransition();
+
   return (
     <html lang="en">
       <head>
@@ -28,6 +33,7 @@ export default function App() {
       </head>
       <body>
         <GlobalStyles />
+        <LoadingSpinner appLoadingState={transition.state} />
         <Navbar></Navbar>
         <ContentWrapper>
           <Outlet />
@@ -44,6 +50,49 @@ const ContentWrapper = styled.div`
   padding: 16px;
 `;
 
+interface Props {
+  appLoadingState: Transition["state"];
+}
+
+const MINIMUM_LOADING_INDICATOR_TIME_MS = 300;
+
+function LoadingSpinner({ appLoadingState }: Props) {
+  const [shouldShow, setShouldShow] = React.useState(false);
+
+  useEffect(() => {
+    if (appLoadingState === "loading") {
+      setShouldShow(true);
+
+      setTimeout(() => {
+        setShouldShow(false);
+      }, MINIMUM_LOADING_INDICATOR_TIME_MS);
+    }
+  });
+
+  return (
+    <LoadingSpinnerWrapper
+      style={{
+        display: shouldShow ? "block" : "none",
+      }}
+    >
+      ⌛ Loading...
+    </LoadingSpinnerWrapper>
+  );
+}
+
+const LoadingSpinnerWrapper = styled.div`
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+
+  width: fit-content;
+  height: fit-content;
+`;
+
 function Navbar() {
   return (
     <Wrapper>
@@ -56,6 +105,7 @@ function Navbar() {
 const Wrapper = styled.div`
   padding: 16px;
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
 
   background: hsla(100deg 50% 50% / 1);
