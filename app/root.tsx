@@ -38,6 +38,7 @@ export default function App() {
         <ContentWrapper>
           <Outlet />
         </ContentWrapper>
+        {/* ScrollRestoration MUST be the last element before Scripts */}
         <ScrollRestoration />
         <Scripts />
         {process.env.NODE_ENV === "development" && <LiveReload />}

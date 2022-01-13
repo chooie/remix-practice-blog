@@ -3,6 +3,10 @@ import styled, { createGlobalStyle, css } from "styled-components";
 export default createGlobalStyle`
 ${reset}
 
+:root {
+  --reach-dialog: 1;
+}
+
 a {
   color: inherit;
   text-decoration: none;

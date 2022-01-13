@@ -1,3 +1,5 @@
+import { DialogOverlay, DialogContent } from "@reach/dialog";
+import React from "react";
 import { Form, Link, redirect, Outlet, useLoaderData } from "remix";
 import type { ActionFunction } from "remix";
 import styled from "styled-components";
@@ -32,10 +34,7 @@ export default function Admin() {
             {posts.map((post) => (
               <ListItem key={post.slug}>
                 <Link to={`/posts/${post.slug}`}>{post.title}</Link>
-                <MyForm method="post">
-                  <input type="hidden" name="slug" value={post.slug} />
-                  <button type="submit">Delete</button>
-                </MyForm>
+                <Delete post={post} />
                 <Link to={`${post.slug}`}>Edit</Link>
               </ListItem>
             ))}
@@ -71,10 +70,92 @@ const ListItem = styled.li`
   gap: 8px;
 `;
 
-const MyForm = styled(Form)`
+const Main = styled.main`
+  flex: 1;
+`;
+
+function Delete({ post }: { post: Post }) {
+  const [showDialog, setShowDialog] = React.useState(false);
+  const open = () => setShowDialog(true);
+  const close = () => setShowDialog(false);
+
+  const formName = `deletePostForm-${post.slug}`;
+
+  return (
+    <DeleteWrapper>
+      <MyForm
+        aria-label={`Delete post ${post.slug}`}
+        name={formName}
+        method="post"
+      >
+        <input type="hidden" name="slug" value={post.slug} />
+        <button
+          type="submit"
+          onClick={(event) => {
+            event.preventDefault();
+            open();
+          }}
+        >
+          Delete
+        </button>
+
+        <MyDialogOverlay isOpen={showDialog} onDismiss={close}>
+          <MyDialogContent>
+            <button
+              onClick={() => {
+                close();
+              }}
+            >
+              Cancel
+            </button>
+            <button onClick={() => submitForm(formName)}>Confirm Delete</button>
+          </MyDialogContent>
+        </MyDialogOverlay>
+      </MyForm>
+    </DeleteWrapper>
+  );
+}
+
+function submitForm(formName: string) {
+  close();
+  const formElement: null | HTMLFormElement = document.querySelector(
+    `form[name="${formName}"]`
+  );
+
+  invariant(formElement !== null, `No form element with name, ${formElement}`);
+  formElement.submit();
+}
+
+const DeleteWrapper = styled.div`
   margin-left: auto;
 `;
 
-const Main = styled.main`
-  flex: 1;
+const MyForm = styled(Form)``;
+
+const MyDialogOverlay = styled(DialogOverlay)`
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 100%;
+
+  background-color: hsla(0deg 0% 0% / 0.5);
+`;
+
+const MyDialogContent = styled(DialogContent)`
+  width: 400px;
+  height: 400px;
+
+  max-height: 100%;
+  max-width: 100%;
+
+  background-color: hsla(0deg 0% 95% / 1);
 `;
