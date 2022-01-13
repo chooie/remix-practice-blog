@@ -1,11 +1,24 @@
-import { Outlet, Link, useLoaderData } from "remix";
+import { Form, Link, redirect, Outlet, useLoaderData } from "remix";
+import type { ActionFunction } from "remix";
 import styled from "styled-components";
+import invariant from "tiny-invariant";
 
-import { getPosts } from "~/post";
+import { getPosts, deletePost } from "~/post";
 import type { Post } from "~/post";
 
 export const loader = async () => {
   return await getPosts();
+};
+
+export const action: ActionFunction = async ({ request }) => {
+  const formData = await request.formData();
+
+  const slug = formData.get("slug");
+  invariant(typeof slug === "string");
+
+  await deletePost(slug);
+
+  return redirect("/admin");
 };
 
 export default function Admin() {
@@ -19,6 +32,10 @@ export default function Admin() {
             {posts.map((post) => (
               <ListItem key={post.slug}>
                 <Link to={`/posts/${post.slug}`}>{post.title}</Link>
+                <Form method="post">
+                  <input type="hidden" name="slug" value={post.slug} />
+                  <button type="submit">Delete</button>
+                </Form>
                 <Link to={`${post.slug}`}>Edit</Link>
               </ListItem>
             ))}

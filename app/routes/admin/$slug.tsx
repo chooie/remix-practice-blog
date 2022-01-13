@@ -18,8 +18,6 @@ type PostError = {
 };
 
 export const loader: LoaderFunction = async ({ params }) => {
-  console.log("YOOOO ", params.slug);
-
   invariant(params.slug, "expected params.slug");
   return await getPost(params.slug);
 };
