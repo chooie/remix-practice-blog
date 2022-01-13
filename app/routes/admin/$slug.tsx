@@ -1,3 +1,4 @@
+import React from "react";
 import {
   useActionData,
   useLoaderData,
@@ -9,7 +10,6 @@ import type { ActionFunction, LoaderFunction } from "remix";
 import invariant from "tiny-invariant";
 
 import { getPost, createOrOverWritePost } from "~/post";
-import { useState } from "react";
 
 type PostError = {
   title?: boolean;
@@ -18,13 +18,13 @@ type PostError = {
 };
 
 export const loader: LoaderFunction = async ({ params }) => {
+  console.log("YOOOO ", params.slug);
+
   invariant(params.slug, "expected params.slug");
-  return getPost(params.slug);
+  return await getPost(params.slug);
 };
 
 export const action: ActionFunction = async ({ request }) => {
-  await new Promise((res) => setTimeout(res, 1000));
-
   const formData = await request.formData();
 
   const title = formData.get("title");
@@ -45,17 +45,23 @@ export const action: ActionFunction = async ({ request }) => {
   invariant(typeof markdown === "string");
   await createOrOverWritePost({ title, slug, markdown });
 
-  return redirect("/admin");
+  return redirect(`admin/${slug}`);
 };
 
-export default function NewPost() {
-  const existingPost = useLoaderData();
+export default function EditPost() {
+  const loadedPost = useLoaderData();
   const errors = useActionData();
   const transition = useTransition();
 
-  const [title, setTitle] = useState(existingPost.title);
-  const [slug, setSlug] = useState(existingPost.slug);
-  const [rawBody, setRawBody] = useState(existingPost.rawBody);
+  const [title, setTitle] = React.useState(loadedPost.title);
+  const [slug, setSlug] = React.useState(loadedPost.slug);
+  const [rawBody, setRawBody] = React.useState(loadedPost.rawBody);
+
+  React.useEffect(() => {
+    setTitle(loadedPost?.title);
+    setSlug(loadedPost?.slug);
+    setRawBody(loadedPost?.rawBody);
+  }, [loadedPost]);
 
   return (
     <Form method="post">
