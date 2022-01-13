@@ -28,18 +28,18 @@ export default function Admin() {
       <h1>Admin</h1>
       <Wrapper>
         <Nav>
-          <ul>
+          <List>
             {posts.map((post) => (
               <ListItem key={post.slug}>
                 <Link to={`/posts/${post.slug}`}>{post.title}</Link>
-                <Form method="post">
+                <MyForm method="post">
                   <input type="hidden" name="slug" value={post.slug} />
                   <button type="submit">Delete</button>
-                </Form>
+                </MyForm>
                 <Link to={`${post.slug}`}>Edit</Link>
               </ListItem>
             ))}
-          </ul>
+          </List>
         </Nav>
         <Main>
           <Outlet />
@@ -56,13 +56,25 @@ const Wrapper = styled.div`
 const Nav = styled.nav`
   flex: 1;
   max-width: 400px;
+  padding-right: 16px;
+`;
+
+const List = styled.ul`
+  padding-left: 0;
+`;
+
+const ListItem = styled.li`
+  margin-bottom: 8px;
+
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+`;
+
+const MyForm = styled(Form)`
+  margin-left: auto;
 `;
 
 const Main = styled.main`
   flex: 1;
-`;
-
-const ListItem = styled.li`
-  display: flex;
-  justify-content: space-between; ;
 `;

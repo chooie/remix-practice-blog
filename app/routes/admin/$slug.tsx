@@ -8,6 +8,7 @@ import {
 } from "remix";
 import type { ActionFunction, LoaderFunction } from "remix";
 import invariant from "tiny-invariant";
+import styled from "styled-components";
 
 import { getPost, createOrOverWritePost } from "~/post";
 
@@ -93,7 +94,7 @@ export default function EditPost() {
           <em>Markdown is required</em>
         ) : null}
         <br />
-        <textarea
+        <TextArea
           rows={20}
           name="markdown"
           value={rawBody}
@@ -108,3 +109,7 @@ export default function EditPost() {
     </Form>
   );
 }
+
+const TextArea = styled.textarea`
+  width: 80ch;
+`;
