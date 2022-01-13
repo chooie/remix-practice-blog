@@ -54,15 +54,29 @@ interface Props {
   appLoadingState: Transition["state"];
 }
 
+const DELAY_BEFORE_TIMER_SHOWS_MS = 500;
 const MINIMUM_LOADING_INDICATOR_TIME_MS = 300;
 
+type Timer = "notWaiting" | ReturnType<typeof setTimeout>;
+
 function LoadingSpinner({ appLoadingState }: Props) {
+  const [timer, setTimer] = React.useState<Timer>("notWaiting");
   const [shouldShow, setShouldShow] = React.useState(false);
 
   useEffect(() => {
-    if (appLoadingState === "loading") {
-      setShouldShow(true);
+    if (appLoadingState === "loading" && timer === "notWaiting") {
+      setTimer(
+        setTimeout(() => {
+          setShouldShow(true);
+        }, DELAY_BEFORE_TIMER_SHOWS_MS)
+      );
+    }
 
+    if (appLoadingState === "idle") {
+      if (timer !== "notWaiting") {
+        clearTimeout(timer);
+      }
+      setTimer("notWaiting");
       setTimeout(() => {
         setShouldShow(false);
       }, MINIMUM_LOADING_INDICATOR_TIME_MS);
@@ -98,6 +112,7 @@ function Navbar() {
     <Wrapper>
       <Link to="/">Home</Link>
       <Link to="/posts">Posts</Link>
+      <LinkEnd to="/admin">Admin</LinkEnd>
     </Wrapper>
   );
 }
@@ -109,4 +124,8 @@ const Wrapper = styled.div`
   gap: 8px;
 
   background: hsla(100deg 50% 50% / 1);
+`;
+
+const LinkEnd = styled(Link)`
+  margin-left: auto;
 `;

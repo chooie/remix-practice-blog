@@ -38,15 +38,13 @@ export async function getPosts() {
 }
 
 export async function getPost(slug: string) {
-  const filepath = path.join(postsPath, slug + ".md");
-  const file = await fs.readFile(filepath);
-  const { attributes, body } = parseFrontMatter(file.toString());
+  const { attributes, body } = parseFrontMatter(await getRawFile(slug));
   invariant(
     isValidPostAttributes(attributes),
-    `Post ${filepath} is missing attributes`
+    `Post ${slug} is missing attributes`
   );
   const html = marked(body);
-  return { slug, html, title: attributes.title };
+  return { rawBody: body, slug, html, title: attributes.title };
 }
 
 type NewPost = {
@@ -55,10 +53,26 @@ type NewPost = {
   markdown: string;
 };
 
-export async function createPost(post: NewPost) {
+export async function createOrOverWritePost(post: NewPost) {
   const md = `---\ntitle: ${post.title}\n---\n\n${post.markdown}`;
   await fs.writeFile(path.join(postsPath, post.slug + ".md"), md);
   return getPost(post.slug);
+}
+
+export async function deletePost(slug: string) {
+  await fs.unlink(path.join(postsPath, slug + ".md"));
+}
+
+export async function getRawFile(slug: string) {
+  const filePath = path.join(postsPath, slug + ".md");
+  const fileString = await getFile(filePath);
+  return fileString;
+}
+
+export async function getFile(path: string) {
+  const file = await fs.readFile(path);
+  const fileString = file.toString();
+  return fileString;
 }
 
 function isValidPostAttributes(

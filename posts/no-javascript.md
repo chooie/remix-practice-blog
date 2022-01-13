@@ -2,4 +2,4 @@
 title: No JavaScript
 ---
 
-wow
+Look, ma. No JavaScript!
