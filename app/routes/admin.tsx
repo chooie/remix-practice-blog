@@ -5,6 +5,7 @@ import type { ActionFunction } from "remix";
 import styled from "styled-components";
 import invariant from "tiny-invariant";
 
+import * as constants from "~/constants";
 import { getPosts, deletePost } from "~/post";
 import type { Post } from "~/post";
 
@@ -33,9 +34,11 @@ export default function Admin() {
           <List>
             {posts.map((post) => (
               <ListItem key={post.slug}>
-                <Link to={`/posts/${post.slug}`}>{post.title}</Link>
-                <Delete post={post} />
-                <Link to={`${post.slug}`}>Edit</Link>
+                <LinkWrapper>
+                  <Link to={`/posts/${post.slug}`}>{post.title}</Link>
+                  <Delete post={post} />
+                  <Link to={`${post.slug}`}>Edit</Link>
+                </LinkWrapper>
               </ListItem>
             ))}
           </List>
@@ -60,11 +63,19 @@ const Nav = styled.nav`
 
 const List = styled.ul`
   padding-left: 0;
+  list-style: none;
 `;
 
 const ListItem = styled.li`
+  padding-bottom: 8px;
   margin-bottom: 8px;
 
+  &:not(:last-child) {
+    border-bottom: 1px solid ${constants.COLORS.gray[600]};
+  }
+`;
+
+const LinkWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 8px;

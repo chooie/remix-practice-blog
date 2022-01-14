@@ -64,4 +64,7 @@ const ContentWrapper = styled.div`
   flex: 1;
   padding: 16px;
   background-color: var(--color-light-blue);
+
+  display: flex;
+  flex-direction: column;
 `;

@@ -3,20 +3,42 @@ import styled from "styled-components";
 
 export default function Index() {
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
-      <h1>Welcome to Charlie's Blog</h1>
+    <Wrapper>
+      <SpacerTwoOutOf3>
+        <h1>Incremental IT Blog</h1>
 
-      <Wrapper>
-        <CoolLink to="/posts">
-          Check out all the Posts
-          <UnderLine />
-        </CoolLink>
-      </Wrapper>
-    </div>
+        <LinkWrapper>
+          <CoolLink to="/posts">
+            Check out all the Posts
+            <UnderLine />
+          </CoolLink>
+        </LinkWrapper>
+      </SpacerTwoOutOf3>
+      <SpacerOneOutOf3 />
+    </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+`;
+
+const SpacerTwoOutOf3 = styled.div`
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+`;
+
+const SpacerOneOutOf3 = styled.div`
+  flex: 1;
+`;
+
+const LinkWrapper = styled.div`
   --cool-color: linear-gradient(
     to right,
     hsla(290deg 50% 50% / 1),

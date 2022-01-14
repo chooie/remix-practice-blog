@@ -18,6 +18,8 @@ export default function GlobalLoadingSpinner({ appLoadingState }: Props) {
 
   useEffect(() => {
     if (appLoadingState === "loading" && timer === "notWaiting") {
+      // If the app has only now just started loading, give it some time before
+      // we actually show the loading spinner
       setTimer(
         setTimeout(() => {
           setShouldShow(true);
@@ -27,8 +29,13 @@ export default function GlobalLoadingSpinner({ appLoadingState }: Props) {
 
     if (appLoadingState === "idle") {
       if (timer !== "notWaiting") {
+        // When the app has loaded, don't bother showing the loading indicator
         clearTimeout(timer);
       }
+
+      // Timer should stop, but should still display for a minimum amount of
+      // time. We do this because don't want the timer to flicker
+      // (if the content loads really quickly)
       setTimer("notWaiting");
       setTimeout(() => {
         setShouldShow(false);

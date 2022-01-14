@@ -11,6 +11,7 @@ export const COLORS = {
     700: "var(--color-gray-700)",
     800: "var(--color-gray-800)",
     900: "var(--color-gray-900)",
+    1000: "var(--color-gray-1000)",
   },
   primary1: "var(--color-blue-1)",
   primary2: "var(--color-blue-2)",
