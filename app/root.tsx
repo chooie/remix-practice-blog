@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { Transition } from "@remix-run/react/transition";
 import {
-  Link,
   Links,
   LiveReload,
   Meta,
+  NavLink,
   Outlet,
   Scripts,
   ScrollRestoration,
@@ -13,11 +13,21 @@ import {
 import type { MetaFunction } from "remix";
 import styled from "styled-components";
 
-import GlobalStyles from "./styles/GlobalStyles";
+import * as constants from "~/constants";
+import colorStyles from "~/styles/colors.css";
+import fontStyles from "~/styles/fonts.css";
+import GlobalStyles from "~/styles/GlobalStyles";
 
 export const meta: MetaFunction = () => {
   return { title: "Charlie's remix blog" };
 };
+
+export function links() {
+  return [
+    { rel: "stylesheet", href: fontStyles },
+    { rel: "stylesheet", href: colorStyles },
+  ];
+}
 
 export default function App() {
   const transition: Transition = useTransition();
@@ -28,16 +38,18 @@ export default function App() {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <Meta />
-        {typeof document === "undefined" ? "__STYLES__" : null}
         <Links />
+        {typeof document === "undefined" ? "__STYLES__" : null}
+        <GlobalStyles />
       </head>
       <body>
-        <GlobalStyles />
+        <div id="root">
+          <Navbar></Navbar>
+          <ContentWrapper>
+            <Outlet />
+          </ContentWrapper>
+        </div>
         <LoadingSpinner appLoadingState={transition.state} />
-        <Navbar></Navbar>
-        <ContentWrapper>
-          <Outlet />
-        </ContentWrapper>
         {/* ScrollRestoration MUST be the last element before Scripts */}
         <ScrollRestoration />
         <Scripts />
@@ -111,22 +123,57 @@ const LoadingSpinnerWrapper = styled.div`
 function Navbar() {
   return (
     <Wrapper>
-      <Link to="/">Home</Link>
-      <Link to="/posts">Posts</Link>
-      <LinkEnd to="/admin">Admin</LinkEnd>
+      <NavLinkWrapper>
+        <MyNavLink to="/">Home</MyNavLink>
+      </NavLinkWrapper>
+      <NavLinkWrapper>
+        <MyNavLink to="/posts">Posts</MyNavLink>
+      </NavLinkWrapper>
+      <NavLinkWrapperEnd>
+        <MyNavLink to="/admin">Admin</MyNavLink>
+      </NavLinkWrapperEnd>
     </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
-  padding: 16px;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
 
-  background: hsla(100deg 50% 50% / 1);
+  min-height: 50px;
+  padding-left: 16px;
+  padding-right: 16px;
+  gap: 16px;
+
+  background: ${constants.COLORS.secondary};
 `;
 
-const LinkEnd = styled(Link)`
+const NavLinkWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const NavLinkWrapperEnd = styled(NavLinkWrapper)`
   margin-left: auto;
+`;
+
+const MyNavLink = styled(NavLink)`
+  --thickness: 3px;
+
+  border-top: var(--thickness) solid transparent;
+  border-bottom: var(--thickness) solid transparent;
+
+  color: ${constants.COLORS.white};
+  font-size: 1.2rem;
+
+  &.active {
+    --color: ${constants.COLORS.accent1};
+
+    color: var(--color);
+    border-bottom-color: var(--color);
+  }
+
+  &:hover {
+    text-decoration: none;
+  }
 `;
