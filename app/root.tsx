@@ -12,9 +12,9 @@ import {
 } from "remix";
 import type { MetaFunction } from "remix";
 import styled from "styled-components";
-import invariant from "tiny-invariant";
 
 import * as constants from "~/constants";
+import Footer from "~/Footer";
 import colorStyles from "~/styles/colors.css";
 import fontStyles from "~/styles/fonts.css";
 import GlobalStyles from "~/styles/GlobalStyles";
@@ -49,28 +49,7 @@ export default function App() {
           <ContentWrapper>
             <Outlet />
           </ContentWrapper>
-          <Footer>
-            <div>
-              <Copyright>
-                &copy; Incremental IT 2018-{new Date().getFullYear()}
-              </Copyright>
-            </div>
-            <div>
-              <a
-                href="#root"
-                onClick={(event) => {
-                  // Disable default scroll
-                  event.preventDefault();
-                  const rootElement = document.querySelector("#root");
-                  invariant(rootElement, "root element must be present");
-                  rootElement.scrollIntoView({ behavior: "smooth" });
-                }}
-              >
-                Back to top
-              </a>
-            </div>
-            <div></div>
-          </Footer>
+          <Footer />
         </div>
         <LoadingSpinner appLoadingState={transition.state} />
         {/* ScrollRestoration MUST be the last element before Scripts */}
@@ -224,34 +203,4 @@ const MyNavLink = styled(NavLink)`
   &:hover {
     text-decoration: none;
   }
-`;
-
-const Footer = styled.footer`
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, auto) minmax(0, 1fr);
-  gap: var(--standard-side-padding);
-  min-height: 50px;
-  padding: var(--standard-side-padding);
-
-  /*
-    Make sure footer is always pushed to the bottom of the viewport (the parent
-    #root container is a column FlexBox model)
-  */
-  margin-top: auto;
-  background: ${constants.COLORS.primary1};
-  color: ${constants.COLORS.white};
-
-  & div:nth-of-type(2n + 2) {
-    display: flex;
-    justify-content: center;
-  }
-
-  & div:nth-of-type(2n + 3) {
-    display: flex;
-    justify-content: flex-end;
-  }
-`;
-
-const Copyright = styled.p`
-  color: var(--color-gray-800);
 `;
