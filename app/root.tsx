@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import { Transition } from "@remix-run/react/transition";
 import {
   Links,
@@ -13,6 +12,7 @@ import type { MetaFunction } from "remix";
 import styled from "styled-components";
 
 import Footer from "~/Footer";
+import GlobalLoadingSpinner from "~/GlobalLoadingSpinner";
 import Navbar from "~/Navbar";
 import colorStyles from "~/styles/colors.css";
 import fontStyles from "~/styles/fonts.css";
@@ -30,7 +30,7 @@ export function links() {
 }
 
 export default function App() {
-  const transition: Transition = useTransition();
+  const transition = useTransition();
 
   return (
     <html lang="en">
@@ -50,7 +50,7 @@ export default function App() {
           </ContentWrapper>
           <Footer />
         </div>
-        <LoadingSpinner appLoadingState={transition.state} />
+        <GlobalLoadingSpinner appLoadingState={transition.state} />
         {/* ScrollRestoration MUST be the last element before Scripts */}
         <ScrollRestoration />
         <Scripts />
@@ -64,61 +64,4 @@ const ContentWrapper = styled.div`
   flex: 1;
   padding: 16px;
   background-color: var(--color-light-blue);
-`;
-
-interface Props {
-  appLoadingState: Transition["state"];
-}
-
-const DELAY_BEFORE_TIMER_SHOWS_MS = 500;
-const MINIMUM_LOADING_INDICATOR_TIME_MS = 300;
-
-type Timer = "notWaiting" | ReturnType<typeof setTimeout>;
-
-function LoadingSpinner({ appLoadingState }: Props) {
-  const [timer, setTimer] = React.useState<Timer>("notWaiting");
-  const [shouldShow, setShouldShow] = React.useState(false);
-
-  useEffect(() => {
-    if (appLoadingState === "loading" && timer === "notWaiting") {
-      setTimer(
-        setTimeout(() => {
-          setShouldShow(true);
-        }, DELAY_BEFORE_TIMER_SHOWS_MS)
-      );
-    }
-
-    if (appLoadingState === "idle") {
-      if (timer !== "notWaiting") {
-        clearTimeout(timer);
-      }
-      setTimer("notWaiting");
-      setTimeout(() => {
-        setShouldShow(false);
-      }, MINIMUM_LOADING_INDICATOR_TIME_MS);
-    }
-  });
-
-  return (
-    <LoadingSpinnerWrapper
-      style={{
-        display: shouldShow ? "block" : "none",
-      }}
-    >
-      ⌛ Loading...
-    </LoadingSpinnerWrapper>
-  );
-}
-
-const LoadingSpinnerWrapper = styled.div`
-  pointer-events: none;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
-
-  width: fit-content;
-  height: fit-content;
 `;
