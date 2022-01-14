@@ -1,15 +1,30 @@
 import { createGlobalStyle, css } from "styled-components";
 
+import * as constants from "~/constants";
+
 export default createGlobalStyle`
 ${reset}
 
 :root {
+  --standard-vertical-padding: 8px;
+  --standard-side-padding: 16px;
+
+
+  /* Don't require loading @reach styles: https://reach.tech/styling */
   --reach-dialog: 1;
 }
 
 body {
   font-family: 'Inter', sans-serif;
   font-synthesis: none;
+
+  background-color: var(--color-blue-2);
+}
+
+#root {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 a {

@@ -12,6 +12,7 @@ import {
 } from "remix";
 import type { MetaFunction } from "remix";
 import styled from "styled-components";
+import invariant from "tiny-invariant";
 
 import * as constants from "~/constants";
 import colorStyles from "~/styles/colors.css";
@@ -48,6 +49,28 @@ export default function App() {
           <ContentWrapper>
             <Outlet />
           </ContentWrapper>
+          <Footer>
+            <div>
+              <Copyright>
+                &copy; Incremental IT 2018-{new Date().getFullYear()}
+              </Copyright>
+            </div>
+            <div>
+              <a
+                href="#root"
+                onClick={(event) => {
+                  // Disable default scroll
+                  event.preventDefault();
+                  const rootElement = document.querySelector("#root");
+                  invariant(rootElement, "root element must be present");
+                  rootElement.scrollIntoView({ behavior: "smooth" });
+                }}
+              >
+                Back to top
+              </a>
+            </div>
+            <div></div>
+          </Footer>
         </div>
         <LoadingSpinner appLoadingState={transition.state} />
         {/* ScrollRestoration MUST be the last element before Scripts */}
@@ -60,7 +83,9 @@ export default function App() {
 }
 
 const ContentWrapper = styled.div`
+  flex: 1;
   padding: 16px;
+  background-color: var(--color-light-blue);
 `;
 
 interface Props {
@@ -125,12 +150,15 @@ function Navbar() {
     <Wrapper>
       <NavLinkWrapper>
         <MyNavLink to="/">Home</MyNavLink>
+        <ActiveMarker className="chooie-marker" />
       </NavLinkWrapper>
       <NavLinkWrapper>
         <MyNavLink to="/posts">Posts</MyNavLink>
+        <ActiveMarker className="chooie-marker" />
       </NavLinkWrapper>
       <NavLinkWrapperEnd>
         <MyNavLink to="/admin">Admin</MyNavLink>
+        <ActiveMarker className="chooie-marker" />
       </NavLinkWrapperEnd>
     </Wrapper>
   );
@@ -139,16 +167,19 @@ function Navbar() {
 const Wrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
+  gap: var(--standard-side-padding);
 
   min-height: 50px;
-  padding-left: 16px;
-  padding-right: 16px;
-  gap: 16px;
+  padding-left: var(--standard-side-padding);
+  padding-right: var(--standard-side-padding);
 
-  background: ${constants.COLORS.secondary};
+  background: ${constants.COLORS.primary1};
 `;
 
 const NavLinkWrapper = styled.div`
+  --activeColor: ${constants.COLORS.accent1};
+
+  position: relative;
   display: flex;
   align-items: center;
 `;
@@ -157,23 +188,70 @@ const NavLinkWrapperEnd = styled(NavLinkWrapper)`
   margin-left: auto;
 `;
 
+const ActiveMarker = styled.div`
+  opacity: 0;
+
+  position: absolute;
+  bottom: 0;
+
+  width: 100%;
+  height: 3px;
+
+  background-color: var(--activeColor);
+`;
+
 const MyNavLink = styled(NavLink)`
-  --thickness: 3px;
-
-  border-top: var(--thickness) solid transparent;
-  border-bottom: var(--thickness) solid transparent;
-
   color: ${constants.COLORS.white};
   font-size: 1.2rem;
+  line-height: 1;
 
   &.active {
-    --color: ${constants.COLORS.accent1};
+    color: var(--activeColor);
+  }
 
-    color: var(--color);
-    border-bottom-color: var(--color);
+  /**
+    (TODO: chooie) This is temporary until Remix works with styled-components
+    properly.
+
+    It should be:
+
+    &.active + ${ActiveMarker}
+  */
+  &.active + .chooie-marker {
+    opacity: 1;
   }
 
   &:hover {
     text-decoration: none;
   }
+`;
+
+const Footer = styled.footer`
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, auto) minmax(0, 1fr);
+  gap: var(--standard-side-padding);
+  min-height: 50px;
+  padding: var(--standard-side-padding);
+
+  /*
+    Make sure footer is always pushed to the bottom of the viewport (the parent
+    #root container is a column FlexBox model)
+  */
+  margin-top: auto;
+  background: ${constants.COLORS.primary1};
+  color: ${constants.COLORS.white};
+
+  & div:nth-of-type(2n + 2) {
+    display: flex;
+    justify-content: center;
+  }
+
+  & div:nth-of-type(2n + 3) {
+    display: flex;
+    justify-content: flex-end;
+  }
+`;
+
+const Copyright = styled.p`
+  color: var(--color-gray-800);
 `;
