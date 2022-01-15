@@ -18,7 +18,7 @@ body {
   font-family: 'Inter', sans-serif;
   font-synthesis: none;
 
-  background-color: var(--color-blue-2);
+  background-color: ${constants.COLORS.primary2};
 }
 
 #root {
