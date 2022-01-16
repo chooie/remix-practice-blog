@@ -16,6 +16,7 @@ export default function handleRequest(
       <RemixServer context={remixContext} url={request.url} />
     )
   );
+
   const styles = sheet.getStyleTags();
 
   markup = markup.replace("__STYLES__", styles);

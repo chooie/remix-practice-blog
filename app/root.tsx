@@ -8,7 +8,6 @@ import {
   useCatch,
   useTransition,
 } from "remix";
-import type { MetaFunction } from "remix";
 import styled from "styled-components";
 
 import Footer from "~/Footer";
@@ -18,9 +17,9 @@ import colorStyles from "~/styles/colors.css";
 import fontStyles from "~/styles/fonts.css";
 import GlobalStyles from "~/styles/GlobalStyles";
 
-export const meta: MetaFunction = () => {
+export function meta() {
   return { title: "Charlie's remix blog" };
-};
+}
 
 export function links() {
   return [
@@ -29,41 +28,44 @@ export function links() {
   ];
 }
 
-export function CatchBoundary() {
-  const caught = useCatch();
-  const transition = useTransition();
-
+export default function App() {
   return (
-    <html lang="en">
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <Meta />
-        <Links />
-        {typeof document === "undefined" ? "__STYLES__" : null}
-        <GlobalStyles />
-      </head>
-      <body>
-        <div id="root">
-          <Navbar></Navbar>
-          <ContentWrapper>
-            <h1>
-              {caught.status} {caught.statusText}
-            </h1>
-          </ContentWrapper>
-          <Footer />
-        </div>
-        <GlobalLoadingSpinner appLoadingState={transition.state} />
-        {/* ScrollRestoration MUST be the last element before Scripts */}
-        <ScrollRestoration />
-        <Scripts />
-        {process.env.NODE_ENV === "development" && <LiveReload />}
-      </body>
-    </html>
+    <Document>
+      <Outlet />
+    </Document>
   );
 }
 
-export default function App() {
+export function CatchBoundary() {
+  const caught = useCatch();
+
+  return (
+    <Document title={`${caught.status} ${caught.statusText}`}>
+      <div className="error-container">
+        <h1>
+          {caught.status} {caught.statusText}
+        </h1>
+      </div>
+    </Document>
+  );
+}
+
+export function ErrorBoundary({ error }: { error: Error }) {
+  return (
+    <Document title="Uh-oh!">
+      <div className="error-container">
+        <h1>App Error</h1>
+        <pre>{error.message}</pre>
+      </div>
+    </Document>
+  );
+}
+
+interface Document {
+  children: React.ReactElement;
+  title?: string;
+}
+function Document({ children, title = "Charlie's blog" }: Document) {
   const transition = useTransition();
 
   return (
@@ -72,6 +74,7 @@ export default function App() {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <Meta />
+        <title>{title}</title>
         <Links />
         {typeof document === "undefined" ? "__STYLES__" : null}
         <GlobalStyles />
@@ -79,9 +82,7 @@ export default function App() {
       <body>
         <div id="root">
           <Navbar></Navbar>
-          <ContentWrapper>
-            <Outlet />
-          </ContentWrapper>
+          <ContentWrapper>{children}</ContentWrapper>
           <Footer />
         </div>
         <GlobalLoadingSpinner appLoadingState={transition.state} />
