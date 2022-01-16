@@ -36,6 +36,8 @@ const Wrapper = styled.div`
 const NavLinkWrapper = styled.div`
   --activeColor: ${constants.COLORS.accent1};
 
+  max-width: 100%;
+
   position: relative;
   display: flex;
   align-items: center;

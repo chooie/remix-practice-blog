@@ -31,28 +31,35 @@ export default function Footer() {
 }
 
 const Wrapper = styled.footer`
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, auto) minmax(0, 1fr);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: var(--standard-side-padding);
+
   min-height: 50px;
   padding: var(--standard-side-padding);
-
   /*
-  Make sure footer is always pushed to the bottom of the viewport (the parent
-  #root container is a column FlexBox model)
-*/
+    Make sure footer is always pushed to the bottom of the viewport (the parent
+    #root container is a column FlexBox model)
+  */
   margin-top: auto;
+
   background: ${constants.COLORS.primary1};
   color: ${constants.COLORS.white};
 
-  & div:nth-of-type(2n + 2) {
-    display: flex;
-    justify-content: center;
-  }
+  @media ${constants.QUERIES.tabletAndUp} {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, auto) minmax(0, 1fr);
 
-  & div:nth-of-type(2n + 3) {
-    display: flex;
-    justify-content: flex-end;
+    & div:nth-of-type(2n + 2) {
+      display: flex;
+      justify-content: center;
+    }
+
+    & div:nth-of-type(2n + 3) {
+      display: flex;
+      justify-content: flex-end;
+    }
   }
 `;
 

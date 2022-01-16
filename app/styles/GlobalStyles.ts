@@ -27,6 +27,14 @@ body {
   flex-direction: column;
 }
 
+p, a, h1, h2, h3, h4, h5, h6 {
+  max-width: 100%;
+}
+
+a {
+  overflow-wrap: break-word;
+}
+
 a {
   color: inherit;
   text-decoration: none;
