@@ -1,4 +1,3 @@
-import { Transition } from "@remix-run/react/transition";
 import {
   Links,
   LiveReload,
@@ -6,6 +5,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useCatch,
   useTransition,
 } from "remix";
 import type { MetaFunction } from "remix";
@@ -27,6 +27,40 @@ export function links() {
     { rel: "stylesheet", href: fontStyles },
     { rel: "stylesheet", href: colorStyles },
   ];
+}
+
+export function CatchBoundary() {
+  const caught = useCatch();
+  const transition = useTransition();
+
+  return (
+    <html lang="en">
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <Meta />
+        <Links />
+        {typeof document === "undefined" ? "__STYLES__" : null}
+        <GlobalStyles />
+      </head>
+      <body>
+        <div id="root">
+          <Navbar></Navbar>
+          <ContentWrapper>
+            <h1>
+              {caught.status} {caught.statusText}
+            </h1>
+          </ContentWrapper>
+          <Footer />
+        </div>
+        <GlobalLoadingSpinner appLoadingState={transition.state} />
+        {/* ScrollRestoration MUST be the last element before Scripts */}
+        <ScrollRestoration />
+        <Scripts />
+        {process.env.NODE_ENV === "development" && <LiveReload />}
+      </body>
+    </html>
+  );
 }
 
 export default function App() {
