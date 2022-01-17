@@ -2,19 +2,28 @@ import styled from "styled-components";
 import { NavLink } from "remix";
 import * as constants from "~/constants";
 
-export default function Navbar() {
+interface Props {
+  reloadDocument: boolean;
+}
+export default function Navbar({ reloadDocument }: Props) {
   return (
     <Wrapper>
       <NavLinkWrapper>
-        <MyNavLink to="/">Home</MyNavLink>
+        <MyNavLink reloadDocument={reloadDocument} to="/">
+          Home
+        </MyNavLink>
         <ActiveMarker className="chooie-marker" />
       </NavLinkWrapper>
       <NavLinkWrapper>
-        <MyNavLink to="/posts">Posts</MyNavLink>
+        <MyNavLink reloadDocument={reloadDocument} to="/posts">
+          Posts
+        </MyNavLink>
         <ActiveMarker className="chooie-marker" />
       </NavLinkWrapper>
       <NavLinkWrapperEnd>
-        <MyNavLink to="/admin">Admin</MyNavLink>
+        <MyNavLink reloadDocument={reloadDocument} to="/admin">
+          Admin
+        </MyNavLink>
         <ActiveMarker className="chooie-marker" />
       </NavLinkWrapperEnd>
     </Wrapper>

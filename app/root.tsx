@@ -30,7 +30,7 @@ export function links() {
 
 export default function App() {
   return (
-    <Document>
+    <Document reloadDocument={false}>
       <Outlet />
     </Document>
   );
@@ -40,7 +40,10 @@ export function CatchBoundary() {
   const caught = useCatch();
 
   return (
-    <Document title={`${caught.status} ${caught.statusText}`}>
+    <Document
+      reloadDocument={true}
+      title={`${caught.status} ${caught.statusText}`}
+    >
       <div className="error-container">
         <h1>
           {caught.status} {caught.statusText}
@@ -52,7 +55,7 @@ export function CatchBoundary() {
 
 export function ErrorBoundary({ error }: { error: Error }) {
   return (
-    <Document title="Uh-oh!">
+    <Document reloadDocument={true} title="Uh-oh!">
       <div className="error-container">
         <h1>App Error</h1>
         <pre>{error.message}</pre>
@@ -63,9 +66,14 @@ export function ErrorBoundary({ error }: { error: Error }) {
 
 interface Document {
   children: React.ReactElement;
+  reloadDocument: boolean;
   title?: string;
 }
-function Document({ children, title = "Charlie's blog" }: Document) {
+function Document({
+  children,
+  reloadDocument,
+  title = "Charlie's blog",
+}: Document) {
   const transition = useTransition();
 
   return (
@@ -81,7 +89,7 @@ function Document({ children, title = "Charlie's blog" }: Document) {
       </head>
       <body>
         <div id="root">
-          <Navbar></Navbar>
+          <Navbar reloadDocument={reloadDocument}></Navbar>
           <ContentWrapper>{children}</ContentWrapper>
           <Footer />
         </div>
