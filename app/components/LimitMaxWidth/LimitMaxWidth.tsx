@@ -1,21 +1,26 @@
 import React from "react";
-// import styled from "styled-components/macro";
+import styled from "styled-components";
 
 import * as constants from "~/constants";
 
 interface Props {
-  Element?: React.ElementType;
   children: React.ReactNode;
+  wrapperBackgroundColor?: string;
+  WrapperElement?: React.ElementType;
 }
-export default function LimitMaxWidth({ Element = "div", children }: Props) {
+export default function LimitMaxWidth({
+  children,
+  wrapperBackgroundColor = "inherit",
+  WrapperElement = "div",
+}: Props) {
   return (
-    <Element
-      style={{
-        maxWidth: `${constants.MAX_APP_WIDTH}px`,
-        margin: "0 auto",
-      }}
-    >
-      {children}
-    </Element>
+    <WrapperElement style={{ backgroundColor: wrapperBackgroundColor }}>
+      <Limit>{children}</Limit>
+    </WrapperElement>
   );
 }
+
+const Limit = styled.div`
+  max-width: ${constants.MAX_APP_WIDTH}px;
+  margin: 0 auto;
+`;

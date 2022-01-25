@@ -10,38 +10,35 @@ interface Props {
 }
 export default function Navbar({ reloadDocument }: Props) {
   return (
-    <Wrapper>
-      <LimitMaxWidth>
-        <InnerWrapper>
-          <NavLinkWrapper>
-            <MyNavLink reloadDocument={reloadDocument} to="/">
-              Home
-            </MyNavLink>
-            <ActiveMarker className="chooie-marker" />
-          </NavLinkWrapper>
-          <NavLinkWrapper>
-            <MyNavLink reloadDocument={reloadDocument} to="/posts">
-              Posts
-            </MyNavLink>
-            <ActiveMarker className="chooie-marker" />
-          </NavLinkWrapper>
-          <NavLinkWrapperEnd>
-            <MyNavLink reloadDocument={reloadDocument} to="/admin">
-              Admin
-            </MyNavLink>
-            <ActiveMarker className="chooie-marker" />
-          </NavLinkWrapperEnd>
-        </InnerWrapper>
-      </LimitMaxWidth>
-    </Wrapper>
+    <LimitMaxWidth
+      WrapperElement="nav"
+      wrapperBackgroundColor={constants.COLORS.primary1}
+    >
+      <InnerWrapper>
+        <NavLinkWrapper>
+          <MyNavLink reloadDocument={reloadDocument} to="/">
+            Home
+          </MyNavLink>
+          <ActiveMarker className="chooie-marker" />
+        </NavLinkWrapper>
+        <NavLinkWrapper>
+          <MyNavLink reloadDocument={reloadDocument} to="/posts">
+            Posts
+          </MyNavLink>
+          <ActiveMarker className="chooie-marker" />
+        </NavLinkWrapper>
+        <NavLinkWrapperEnd>
+          <MyNavLink reloadDocument={reloadDocument} to="/admin">
+            Admin
+          </MyNavLink>
+          <ActiveMarker className="chooie-marker" />
+        </NavLinkWrapperEnd>
+      </InnerWrapper>
+    </LimitMaxWidth>
   );
 }
 
-const Wrapper = styled.div`
-  background: ${constants.COLORS.primary1};
-`;
-
-const InnerWrapper = styled.nav`
+const InnerWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: var(--standard-side-padding);
