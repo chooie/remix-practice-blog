@@ -1,7 +1,8 @@
 import styled from "styled-components";
-import invariant from "tiny-invariant";
 
 import * as constants from "~/constants";
+
+import GoBackToTopLink from "~/components/GoBackToTopLink";
 
 export default function Footer() {
   return (
@@ -11,20 +12,8 @@ export default function Footer() {
           &copy; Incremental IT 2018-{new Date().getFullYear()}
         </Copyright>
       </div>
-      <div>
-        <a
-          href="#root"
-          onClick={(event) => {
-            // Disable default scroll
-            event.preventDefault();
-            const rootElement = document.querySelector("#root");
-            invariant(rootElement, "root element must be present");
-            rootElement.scrollIntoView({ behavior: "smooth" });
-          }}
-        >
-          Back to top
-        </a>
-      </div>
+      <div>{/* <GoBackToTopLink /> */}</div>
+      {/* Need the last div for 3 column layout */}
       <div></div>
     </Wrapper>
   );
