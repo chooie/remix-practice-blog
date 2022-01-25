@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import { NavLink } from "remix";
+
 import * as constants from "~/constants";
+
+import LimitMaxWidth from "~/components/LimitMaxWidth";
 
 interface Props {
   reloadDocument: boolean;
@@ -8,29 +11,37 @@ interface Props {
 export default function Navbar({ reloadDocument }: Props) {
   return (
     <Wrapper>
-      <NavLinkWrapper>
-        <MyNavLink reloadDocument={reloadDocument} to="/">
-          Home
-        </MyNavLink>
-        <ActiveMarker className="chooie-marker" />
-      </NavLinkWrapper>
-      <NavLinkWrapper>
-        <MyNavLink reloadDocument={reloadDocument} to="/posts">
-          Posts
-        </MyNavLink>
-        <ActiveMarker className="chooie-marker" />
-      </NavLinkWrapper>
-      <NavLinkWrapperEnd>
-        <MyNavLink reloadDocument={reloadDocument} to="/admin">
-          Admin
-        </MyNavLink>
-        <ActiveMarker className="chooie-marker" />
-      </NavLinkWrapperEnd>
+      <LimitMaxWidth>
+        <InnerWrapper>
+          <NavLinkWrapper>
+            <MyNavLink reloadDocument={reloadDocument} to="/">
+              Home
+            </MyNavLink>
+            <ActiveMarker className="chooie-marker" />
+          </NavLinkWrapper>
+          <NavLinkWrapper>
+            <MyNavLink reloadDocument={reloadDocument} to="/posts">
+              Posts
+            </MyNavLink>
+            <ActiveMarker className="chooie-marker" />
+          </NavLinkWrapper>
+          <NavLinkWrapperEnd>
+            <MyNavLink reloadDocument={reloadDocument} to="/admin">
+              Admin
+            </MyNavLink>
+            <ActiveMarker className="chooie-marker" />
+          </NavLinkWrapperEnd>
+        </InnerWrapper>
+      </LimitMaxWidth>
     </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
+  background: ${constants.COLORS.primary1};
+`;
+
+const InnerWrapper = styled.nav`
   display: flex;
   flex-wrap: wrap;
   gap: var(--standard-side-padding);
@@ -38,8 +49,6 @@ const Wrapper = styled.div`
   min-height: 50px;
   padding-left: var(--standard-side-padding);
   padding-right: var(--standard-side-padding);
-
-  background: ${constants.COLORS.primary1};
 `;
 
 const NavLinkWrapper = styled.div`

@@ -13,12 +13,15 @@ export const COLORS = {
     900: "var(--color-gray-900)",
     1000: "var(--color-gray-1000)",
   },
-  primary1: "var(--color-blue-1)",
-  primary2: "var(--color-blue-2)",
+  primary1: "var(--color-primary)",
+  primary2: "var(--color-primary-2)",
   primary3: "var(--color-blue-3)",
-  secondary: "var(--color-light-blue);",
-  accent1: "var(--color-light-orange)",
+  secondary: "var(--color-secondary);",
+  accent1: "var(--color-accent-1)",
+  text: "var(--color-text)",
 };
+
+export const MAX_APP_WIDTH = 1920;
 
 export const WEIGHTS = {
   normal: 500,

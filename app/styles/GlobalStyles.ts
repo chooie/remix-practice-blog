@@ -19,6 +19,7 @@ body {
   font-synthesis: none;
 
   background-color: ${constants.COLORS.primary2};
+  color: ${constants.COLORS.text}
 }
 
 #root {
