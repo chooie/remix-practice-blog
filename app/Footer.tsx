@@ -2,24 +2,30 @@ import styled from "styled-components";
 
 import * as constants from "~/constants";
 
-import GoBackToTopLink from "~/components/GoBackToTopLink";
+import LimitMaxWidth from "~/components/LimitMaxWidth";
 
 export default function Footer() {
   return (
-    <Wrapper>
-      <div>
-        <Copyright>
-          &copy; Incremental IT 2018-{new Date().getFullYear()}
-        </Copyright>
-      </div>
-      <div>{/* <GoBackToTopLink /> */}</div>
-      {/* Need the last div for 3 column layout */}
-      <div></div>
+    <Wrapper WrapperElement="footer">
+      <InnerWrapper>
+        <div>
+          <Copyright>
+            &copy; Incremental IT 2018-{new Date().getFullYear()}
+          </Copyright>
+        </div>
+        <div>{/* <GoBackToTopLink /> */}</div>
+        {/* Need the last div for 3 column layout */}
+        <div></div>
+      </InnerWrapper>
     </Wrapper>
   );
 }
 
-const Wrapper = styled.footer`
+const Wrapper = styled(LimitMaxWidth)`
+  background-color: ${constants.COLORS.primary1};
+`;
+
+const InnerWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -27,13 +33,7 @@ const Wrapper = styled.footer`
 
   min-height: 50px;
   padding: var(--standard-side-padding);
-  /*
-    Make sure footer is always pushed to the bottom of the viewport (the parent
-    #root container is a column FlexBox model)
-  */
-  margin-top: auto;
 
-  background: ${constants.COLORS.primary1};
   color: ${constants.COLORS.white};
 
   @media ${constants.QUERIES.tabletAndUp} {

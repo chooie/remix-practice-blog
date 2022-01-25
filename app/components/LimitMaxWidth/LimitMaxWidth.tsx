@@ -5,16 +5,15 @@ import * as constants from "~/constants";
 
 interface Props {
   children: React.ReactNode;
-  wrapperBackgroundColor?: string;
-  WrapperElement?: React.ElementType;
+  WrapperElement?: keyof JSX.IntrinsicElements;
 }
 export default function LimitMaxWidth({
   children,
-  wrapperBackgroundColor = "inherit",
   WrapperElement = "div",
+  ...delegated
 }: Props) {
   return (
-    <WrapperElement style={{ backgroundColor: wrapperBackgroundColor }}>
+    <WrapperElement {...delegated}>
       <Limit>{children}</Limit>
     </WrapperElement>
   );

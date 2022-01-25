@@ -10,10 +10,7 @@ interface Props {
 }
 export default function Navbar({ reloadDocument }: Props) {
   return (
-    <LimitMaxWidth
-      WrapperElement="nav"
-      wrapperBackgroundColor={constants.COLORS.primary1}
-    >
+    <Wrapper WrapperElement="nav">
       <InnerWrapper>
         <NavLinkWrapper>
           <MyNavLink reloadDocument={reloadDocument} to="/">
@@ -34,9 +31,13 @@ export default function Navbar({ reloadDocument }: Props) {
           <ActiveMarker className="chooie-marker" />
         </NavLinkWrapperEnd>
       </InnerWrapper>
-    </LimitMaxWidth>
+    </Wrapper>
   );
 }
+
+const Wrapper = styled(LimitMaxWidth)`
+  background-color: ${constants.COLORS.primary1};
+`;
 
 const InnerWrapper = styled.div`
   display: flex;
