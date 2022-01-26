@@ -88,11 +88,11 @@ function Document({
         <GlobalStyles />
       </head>
       <body>
-        <div id="root">
+        <Root id="root">
           <Navbar reloadDocument={reloadDocument}></Navbar>
           <ContentWrapper>{children}</ContentWrapper>
           <Footer />
-        </div>
+        </Root>
         <GlobalLoadingSpinner appLoadingState={transition.state} />
         {/* ScrollRestoration MUST be the last element before Scripts */}
         <ScrollRestoration />
@@ -102,6 +102,11 @@ function Document({
     </html>
   );
 }
+
+const Root = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
 const ContentWrapper = styled.div`
   flex: 1;
