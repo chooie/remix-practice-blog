@@ -1,26 +1,37 @@
 import { Link } from "remix";
 import styled from "styled-components";
 
+import LimitMaxWidth from "~/components/LimitMaxWidth";
+
 export default function Index() {
   return (
     <Wrapper>
-      <SpacerTwoOutOf3>
-        <h1>Incremental IT Blog</h1>
-
-        <LinkWrapper>
-          <CoolLink to="/posts">
-            Check out all the Posts
-            <UnderLine />
-          </CoolLink>
-        </LinkWrapper>
-      </SpacerTwoOutOf3>
-      <SpacerOneOutOf3 />
+      <InnerWrapper>
+        <SpacerTwoOutOf3>
+          <h1>Incremental IT Blog</h1>
+          <LinkWrapper>
+            <CoolLink to="/posts">
+              Check out all the Posts
+              <UnderLine />
+            </CoolLink>
+          </LinkWrapper>
+        </SpacerTwoOutOf3>
+        <SpacerOneOutOf3 />
+      </InnerWrapper>
     </Wrapper>
   );
 }
 
-const Wrapper = styled.div`
+const Wrapper = styled(LimitMaxWidth)`
   flex: 1;
+
+  display: flex;
+  flex-direction: column;
+`;
+
+const InnerWrapper = styled.div`
+  flex: 1;
+
   display: flex;
   flex-direction: column;
 `;
