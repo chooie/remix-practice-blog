@@ -1,11 +1,8 @@
 import {
-  ActionFunction,
-  Form,
   Links,
   LiveReload,
   Meta,
   Outlet,
-  redirect,
   Scripts,
   ScrollRestoration,
   useCatch,
@@ -14,7 +11,6 @@ import {
 } from "remix";
 import type { LoaderFunction } from "remix";
 import styled from "styled-components";
-import invariant from "tiny-invariant";
 
 import { userPreferences } from "~/cookies";
 import LimitMaxWidth from "~/components/LimitMaxWidth";
@@ -43,41 +39,6 @@ export const loader: LoaderFunction = async ({ request }) => {
   return {
     useDarkTheme: cookie.useDarkTheme,
   };
-};
-
-export const action: ActionFunction = async ({ request }) => {
-  const cookieHeader = request.headers.get("Cookie");
-  const cookie = (await userPreferences.parse(cookieHeader)) || {};
-  const bodyParams = await request.formData();
-
-  const chosenTheme = bodyParams.get("theme");
-  let browserLocation = bodyParams.get("browserLocation");
-
-  if (!browserLocation) {
-    // In the event that JS was disabled and the form browserLocation wasn't
-    // set, try and use the Referer header.
-    browserLocation = request.headers.get("Referer") || "/";
-  }
-
-  invariant(
-    typeof browserLocation === "string",
-    [
-      `Browser location must be a string. Was '${browserLocation}' of `,
-      `type ${typeof browserLocation}`,
-    ].join("")
-  );
-
-  if (chosenTheme === "dark") {
-    cookie.useDarkTheme = true;
-  } else {
-    cookie.useDarkTheme = false;
-  }
-
-  return redirect(browserLocation, {
-    headers: {
-      "Set-Cookie": await userPreferences.serialize(cookie),
-    },
-  });
 };
 
 export default function App() {
@@ -131,20 +92,6 @@ function Document({
 
   const useDarkTheme = loaderData?.useDarkTheme;
 
-  let currentUrl = "";
-
-  if (typeof document !== "undefined") {
-    const location = (window?.location).toString();
-    invariant(
-      typeof location === "string",
-      [
-        `Location must be a string. Was '${location}' of `,
-        `type ${typeof location}`,
-      ].join("")
-    );
-    currentUrl = location;
-  }
-
   return (
     <html lang="en">
       <head>
@@ -159,44 +106,6 @@ function Document({
       <body className={useDarkTheme ? "dark-theme" : "light-theme"}>
         <Root id="root">
           <Navbar reloadDocument={reloadDocument}></Navbar>
-          <Form method="post">
-            <input type="hidden" name="browserLocation" value={currentUrl} />
-            <input
-              type="radio"
-              id="light-theme"
-              name="theme"
-              value="light"
-              defaultChecked={!useDarkTheme}
-              onChange={(event) => {
-                const parentForm = event.currentTarget.parentElement;
-                invariant(
-                  parentForm instanceof HTMLFormElement,
-                  "Parent must be a form"
-                );
-                parentForm.submit();
-              }}
-            />
-            <label htmlFor="light-theme">Light</label>
-            <input
-              type="radio"
-              id="dark-theme"
-              name="theme"
-              value="dark"
-              defaultChecked={useDarkTheme}
-              onChange={(event) => {
-                const parentForm = event.currentTarget.parentElement;
-                invariant(
-                  parentForm instanceof HTMLFormElement,
-                  "Parent must be a form"
-                );
-                parentForm.submit();
-              }}
-            />
-            <label htmlFor="dark-theme">Dark</label>
-            <noscript>
-              <button type="submit">Choose</button>
-            </noscript>
-          </Form>
           <ContentWrapper>{children}</ContentWrapper>
           <Footer />
         </Root>

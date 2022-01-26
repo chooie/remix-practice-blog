@@ -1,9 +1,10 @@
-import styled from "styled-components";
 import { NavLink } from "remix";
+import styled from "styled-components";
 
 import * as constants from "~/constants";
 
 import LimitMaxWidth from "~/components/LimitMaxWidth";
+import LightAndDarkThemeSwitcher from "~/components/LightAndDarkThemeSwitcher";
 
 interface Props {
   reloadDocument: boolean;
@@ -24,12 +25,16 @@ export default function Navbar({ reloadDocument }: Props) {
           </MyNavLink>
           <ActiveMarker className="chooie-marker" />
         </NavLinkWrapper>
-        <NavLinkWrapperEnd>
+        <MiddleDivider />
+        <NavLinkWrapper>
+          <LightAndDarkThemeSwitcher />
+        </NavLinkWrapper>
+        <NavLinkWrapper>
           <MyNavLink reloadDocument={reloadDocument} to="/admin">
             Admin
           </MyNavLink>
           <ActiveMarker className="chooie-marker" />
-        </NavLinkWrapperEnd>
+        </NavLinkWrapper>
       </InnerWrapper>
     </Wrapper>
   );
@@ -37,6 +42,7 @@ export default function Navbar({ reloadDocument }: Props) {
 
 const Wrapper = styled(LimitMaxWidth)`
   background-color: ${constants.COLORS.primary1};
+  color: ${constants.COLORS.white};
 `;
 
 const InnerWrapper = styled.div`
@@ -57,8 +63,8 @@ const NavLinkWrapper = styled.div`
   align-items: center;
 `;
 
-const NavLinkWrapperEnd = styled(NavLinkWrapper)`
-  margin-left: auto;
+const MiddleDivider = styled.div`
+  flex: 1;
 `;
 
 const ActiveMarker = styled.div`
@@ -76,7 +82,6 @@ const ActiveMarker = styled.div`
 const MyNavLink = styled(NavLink)`
   margin: 8px 0;
 
-  color: ${constants.COLORS.white};
   font-size: 1.2rem;
   line-height: 1;
 
