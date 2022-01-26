@@ -8,6 +8,8 @@ body {
   --color-light-blue: hsl(197deg 96% 90%);
   --color-light-orange: hsl(45deg 96% 60%);
 
+  --color-dark-blue-1: hsl(197deg 96% 5%);
+
   --color-gray-50: hsl(210deg, 19%, 10%);
   --color-gray-100: hsl(210deg, 15%, 20%);
   --color-gray-200: hsl(210deg, 15%, 25%);
@@ -30,4 +32,15 @@ body {
 }
 
 @media (prefers-color-scheme: dark) {
+  body {
+    --color-primary: var(--color-dark-blue-1);
+    --color-secondary: var(--color-gray-50);
+    --color-text: var(--color-gray-1000);
+  }
+}
+
+body.dark-theme {
+  --color-primary: var(--color-dark-blue-1);
+  --color-secondary: var(--color-gray-50);
+  --color-text: var(--color-gray-1000);
 }

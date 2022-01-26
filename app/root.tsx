@@ -112,5 +112,5 @@ const Root = styled.div`
 const ContentWrapper = styled(LimitMaxWidth)`
   flex: 1;
 
-  background-color: var(--color-light-blue);
+  background-color: var(--color-secondary);
 `;
