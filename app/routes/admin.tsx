@@ -27,7 +27,7 @@ export const action: ActionFunction = async ({ request }) => {
 export default function Admin() {
   const posts = useLoaderData<Post[]>();
   return (
-    <>
+    <div>
       <h1>Admin</h1>
       <Wrapper>
         <Nav>
@@ -47,7 +47,7 @@ export default function Admin() {
           <Outlet />
         </Main>
       </Wrapper>
-    </>
+    </div>
   );
 }
 

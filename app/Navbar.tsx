@@ -10,7 +10,7 @@ interface Props {
 }
 export default function Navbar({ reloadDocument }: Props) {
   return (
-    <Wrapper WrapperElement="nav">
+    <Wrapper as="nav">
       <InnerWrapper>
         <NavLinkWrapper>
           <MyNavLink reloadDocument={reloadDocument} to="/">
@@ -45,8 +45,6 @@ const InnerWrapper = styled.div`
   gap: var(--standard-side-padding);
 
   min-height: 50px;
-  padding-left: var(--standard-side-padding);
-  padding-right: var(--standard-side-padding);
 `;
 
 const NavLinkWrapper = styled.div`
@@ -76,6 +74,8 @@ const ActiveMarker = styled.div`
 `;
 
 const MyNavLink = styled(NavLink)`
+  margin: 8px 0;
+
   color: ${constants.COLORS.white};
   font-size: 1.2rem;
   line-height: 1;

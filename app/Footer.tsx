@@ -6,16 +6,15 @@ import LimitMaxWidth from "~/components/LimitMaxWidth";
 
 export default function Footer() {
   return (
-    <Wrapper WrapperElement="footer">
+    <Wrapper as="footer">
       <InnerWrapper>
         <div>
           <Copyright>
-            &copy; Incremental IT 2018-{new Date().getFullYear()}
+            &copy; Incremental IT LLC 2018-{new Date().getFullYear()}
           </Copyright>
         </div>
-        <div>{/* <GoBackToTopLink /> */}</div>
-        {/* Need the last div for 3 column layout */}
-        <div></div>
+        <Spacer />
+        <Spacer />
       </InnerWrapper>
     </Wrapper>
   );
@@ -26,19 +25,20 @@ const Wrapper = styled(LimitMaxWidth)`
 `;
 
 const InnerWrapper = styled.div`
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: var(--standard-side-padding);
 
   min-height: 50px;
-  padding: var(--standard-side-padding);
 
   color: ${constants.COLORS.white};
 
   @media ${constants.QUERIES.tabletAndUp} {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, auto) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
 
     & div:nth-of-type(2n + 2) {
       display: flex;
@@ -49,6 +49,14 @@ const InnerWrapper = styled.div`
       display: flex;
       justify-content: flex-end;
     }
+  }
+`;
+
+const Spacer = styled.div`
+  display: none;
+
+  @media ${constants.QUERIES.tabletAndUp} {
+    display: unset;
   }
 `;
 

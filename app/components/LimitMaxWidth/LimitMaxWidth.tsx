@@ -1,37 +1,36 @@
-import React from "react";
 import styled from "styled-components";
 
 import * as constants from "~/constants";
 
-interface Props {
-  children: React.ReactNode;
+interface LimitMaxWidthProps {
   maxWidth?: string;
-  WrapperElement?: keyof JSX.IntrinsicElements;
 }
-export default function LimitMaxWidth({
-  children,
-  maxWidth = `${constants.MAX_APP_WIDTH}px`,
-  WrapperElement = "div",
-  ...delegated
-}: Props) {
-  return (
-    <WrapperElement {...delegated}>
-      <Limit maxWidth={maxWidth}>{children}</Limit>
-    </WrapperElement>
-  );
-}
+const LimitMaxWidth = styled.div`
+  --breathing-room: var(--standard-side-padding);
+  display: grid;
+  grid-template-columns:
+    1fr
+    min(
+      ${(p: LimitMaxWidthProps) =>
+        p.maxWidth ? p.maxWidth : `${constants.MAX_APP_WIDTH}px`},
+      100%
+    )
+    1fr;
+  padding-left: var(--breathing-room);
+  padding-right: var(--breathing-room);
 
-interface LimitProps {
-  maxWidth: string;
-}
-const Limit = styled.div`
-  max-width: ${(p: LimitProps) => p.maxWidth};
-  margin: 0 auto;
-
-  // Fill the available vertical space in case the wrapper element is styled
-  // with display: flex
-  flex: 1;
-
-  display: flex;
-  flex-direction: column;
+  & > * {
+    grid-column: 2;
+  }
 `;
+
+/**
+ * Escape hatch for this layout mode
+ */
+export const FullBleed = styled.div`
+  grid-column: 1 / -1;
+  margin-left: calc(var(--breathing-room) * -1);
+  margin-right: calc(var(--breathing-room) * -1);
+`;
+
+export default LimitMaxWidth;

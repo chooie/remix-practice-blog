@@ -10,6 +10,7 @@ import {
 } from "remix";
 import styled from "styled-components";
 
+import LimitMaxWidth from "~/components/LimitMaxWidth";
 import Footer from "~/Footer";
 import GlobalLoadingSpinner from "~/GlobalLoadingSpinner";
 import Navbar from "~/Navbar";
@@ -44,11 +45,11 @@ export function CatchBoundary() {
       reloadDocument={true}
       title={`${caught.status} ${caught.statusText}`}
     >
-      <div className="error-container">
+      <main className="error-container">
         <h1>
           {caught.status} {caught.statusText}
         </h1>
-      </div>
+      </main>
     </Document>
   );
 }
@@ -56,10 +57,10 @@ export function CatchBoundary() {
 export function ErrorBoundary({ error }: { error: Error }) {
   return (
     <Document reloadDocument={true} title="Uh-oh!">
-      <div className="error-container">
+      <main className="error-container">
         <h1>App Error</h1>
         <pre>{error.message}</pre>
-      </div>
+      </main>
     </Document>
   );
 }
@@ -108,11 +109,8 @@ const Root = styled.div`
   flex-direction: column;
 `;
 
-const ContentWrapper = styled.div`
+const ContentWrapper = styled(LimitMaxWidth)`
   flex: 1;
-  padding: 16px;
-  background-color: var(--color-light-blue);
 
-  display: flex;
-  flex-direction: column;
+  background-color: var(--color-light-blue);
 `;
