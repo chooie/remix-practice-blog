@@ -9,6 +9,8 @@ body {
   --color-light-orange: hsl(45deg 96% 60%);
 
   --color-dark-blue-1: hsl(197deg 96% 5%);
+  --color-dark-blue-2: hsl(197deg 96% 10%);
+  --color-dark-blue-3: hsl(197deg 96% 18%);
 
   --color-gray-50: hsl(210deg, 19%, 10%);
   --color-gray-100: hsl(210deg, 15%, 20%);
@@ -21,26 +23,4 @@ body {
   --color-gray-800: hsl(210deg, 20%, 77%);
   --color-gray-900: hsl(210deg, 25%, 88%);
   --color-gray-1000: hsl(210deg, 25%, 96%);
-
-  --color-primary: var(--color-blue-1);
-  --color-primary-2: var(--color-blue-2);
-  --color-primary-3: var(--color-blue-3);
-  --color-secondary: var(--color-light-blue);
-  --color-accent-1: var(--color-light-orange);
-
-  --color-text: var(--color-gray-50);
-}
-
-@media (prefers-color-scheme: dark) {
-  body {
-    --color-primary: var(--color-dark-blue-1);
-    --color-secondary: var(--color-gray-50);
-    --color-text: var(--color-gray-1000);
-  }
-}
-
-body.dark-theme {
-  --color-primary: var(--color-dark-blue-1);
-  --color-secondary: var(--color-gray-50);
-  --color-text: var(--color-gray-1000);
 }

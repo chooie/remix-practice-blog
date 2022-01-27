@@ -1,3 +1,5 @@
+// @ts-ignore
+import feather from "feather-icons";
 import React from "react";
 import { Form, useLoaderData } from "remix";
 import styled from "styled-components";
@@ -5,6 +7,7 @@ import invariant from "tiny-invariant";
 
 // @ts-ignore
 import VisuallyHidden from "~/components/VisuallyHidden";
+import * as constants from "~/constants";
 
 export default function LightAndDarkThemeSwitcher() {
   const loaderData = useLoaderData();
@@ -28,34 +31,16 @@ export default function LightAndDarkThemeSwitcher() {
   return (
     <ThemeForm action="theme-switcher" method="post">
       <input type="hidden" name="browserLocation" value={currentUrl} />
-      <RadioWrapper>
-        <RadioButton
-          type="radio"
-          id="light-theme"
-          name="theme"
-          value="light"
-          defaultChecked={!useDarkTheme}
-          onChange={submitForm}
-        />
-        <Visual className="visual">
-          <img src="feather-icons-4.28.0/sun.svg" alt="" />
-        </Visual>
+      <RadioWrapper title="Select light theme">
+        <ThemeRadioButton useDarkTheme={!useDarkTheme} value="light" />
+        <Visual className="visual light" dangerouslySetInnerHTML={sun()} />
         <VisuallyHidden>
           <label htmlFor="light-theme">Light</label>
         </VisuallyHidden>
       </RadioWrapper>
-      <RadioWrapper>
-        <RadioButton
-          type="radio"
-          id="dark-theme"
-          name="theme"
-          value="dark"
-          defaultChecked={useDarkTheme}
-          onChange={submitForm}
-        />
-        <Visual className="visual">
-          <img src="feather-icons-4.28.0/moon.svg" alt="" />
-        </Visual>
+      <RadioWrapper title="Select dark theme">
+        <ThemeRadioButton useDarkTheme={useDarkTheme} value="dark" />
+        <Visual className="visual dark" dangerouslySetInnerHTML={moon()} />
         <VisuallyHidden>
           <label htmlFor="dark-theme">Dark</label>
         </VisuallyHidden>
@@ -67,6 +52,31 @@ export default function LightAndDarkThemeSwitcher() {
   );
 }
 
+interface ThemeRadioButtonProps {
+  useDarkTheme: boolean;
+  value: "light" | "dark";
+}
+function ThemeRadioButton({ useDarkTheme, value }: ThemeRadioButtonProps) {
+  return (
+    <RadioButton
+      type="radio"
+      id="dark-theme"
+      name="theme"
+      value={value}
+      defaultChecked={useDarkTheme}
+      onChange={submitForm}
+    />
+  );
+}
+
+function sun() {
+  return { __html: feather.icons.sun.toSvg() };
+}
+
+function moon() {
+  return { __html: feather.icons.moon.toSvg() };
+}
+
 function submitForm(event: React.ChangeEvent) {
   const parentForm = event.currentTarget.closest("form");
   invariant(parentForm instanceof HTMLFormElement, "Parent must be a form");
@@ -74,8 +84,11 @@ function submitForm(event: React.ChangeEvent) {
 }
 
 const ThemeForm = styled(Form)`
+  padding: 4px;
+
   display: flex;
   align-items: center;
+  gap: 8px;
 `;
 
 const RadioWrapper = styled.span`
@@ -84,10 +97,6 @@ const RadioWrapper = styled.span`
 
   width: 40px;
   height: 40px;
-
-  &:not(:first-of-type) {
-    margin-left: 8px;
-  }
 `;
 
 const Visual = styled.span`
@@ -101,6 +110,8 @@ const Visual = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  border-radius: 50%;
 `;
 
 const RadioButton = styled.input`
@@ -113,7 +124,20 @@ const RadioButton = styled.input`
 
   opacity: 0;
 
+  &:focus-visible + .visual {
+    outline: 1px dotted #212121;
+    outline: 5px auto -webkit-focus-ring-color;
+  }
+
   &:checked ~ .visual {
-    background: red;
+    background-color: ${constants.COLORS.primary2};
+
+    &.light {
+      color: hsl(55deg 95% 57%);
+    }
+
+    &.dark {
+      color: ${constants.COLORS.gray[800]};
+    }
   }
 `;

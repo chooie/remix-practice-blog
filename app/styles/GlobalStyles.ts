@@ -2,8 +2,36 @@ import { createGlobalStyle, css } from "styled-components";
 
 import * as constants from "~/constants";
 
+const nightThemeColors = css`
+  --color-primary: var(--color-dark-blue-1);
+  --color-primary-2: var(--color-dark-blue-2);
+  --color-primary-3: var(--color-dark-blue-3);
+  --color-secondary: var(--color-gray-50);
+  --color-text: var(--color-gray-1000);
+`;
+
 export default createGlobalStyle`
+
 ${reset}
+
+body {
+  /* Default light theme colors */
+  --color-primary: var(--color-blue-1);
+  --color-primary-2: var(--color-blue-2);
+  --color-primary-3: var(--color-blue-3);
+  --color-secondary: var(--color-light-blue);
+  --color-accent-1: var(--color-light-orange);
+
+  --color-text: var(--color-gray-50);
+
+  &.dark-theme {
+    ${nightThemeColors}
+  }
+
+  @media (prefers-color-scheme: dark) {
+    ${nightThemeColors}
+  }
+}
 
 :root {
   --standard-vertical-padding: 8px;
