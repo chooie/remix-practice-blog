@@ -37,7 +37,9 @@ export default function LightAndDarkThemeSwitcher() {
           defaultChecked={!useDarkTheme}
           onChange={submitForm}
         />
-        <Visual className="visual" />
+        <Visual className="visual">
+          <img src="feather-icons-4.28.0/sun.svg" alt="" />
+        </Visual>
         <VisuallyHidden>
           <label htmlFor="light-theme">Light</label>
         </VisuallyHidden>
@@ -51,7 +53,9 @@ export default function LightAndDarkThemeSwitcher() {
           defaultChecked={useDarkTheme}
           onChange={submitForm}
         />
-        <Visual className="visual" />
+        <Visual className="visual">
+          <img src="feather-icons-4.28.0/moon.svg" alt="" />
+        </Visual>
         <VisuallyHidden>
           <label htmlFor="dark-theme">Dark</label>
         </VisuallyHidden>
@@ -71,6 +75,7 @@ function submitForm(event: React.ChangeEvent) {
 
 const ThemeForm = styled(Form)`
   display: flex;
+  align-items: center;
 `;
 
 const RadioWrapper = styled.span`
@@ -93,7 +98,9 @@ const Visual = styled.span`
   height: 100%;
   width: 100%;
 
-  background: red;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const RadioButton = styled.input`
@@ -106,7 +113,7 @@ const RadioButton = styled.input`
 
   opacity: 0;
 
-  &[checked] ~ .visual {
-    background: blue;
+  &:checked ~ .visual {
+    background: red;
   }
 `;
