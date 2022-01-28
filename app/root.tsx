@@ -92,6 +92,16 @@ function Document({
 
   const useDarkTheme = loaderData?.useDarkTheme;
 
+  let themeClass;
+
+  if (useDarkTheme === undefined) {
+    themeClass = "";
+  } else if (useDarkTheme === false) {
+    themeClass = "light-theme";
+  } else {
+    themeClass = "dark-theme";
+  }
+
   return (
     <html lang="en">
       <head>
@@ -103,7 +113,7 @@ function Document({
         {typeof document === "undefined" ? "__STYLES__" : null}
         <GlobalStyles />
       </head>
-      <body className={useDarkTheme ? "dark-theme" : "light-theme"}>
+      <Body className={themeClass}>
         <Root id="root">
           <Navbar reloadDocument={reloadDocument}></Navbar>
           <ContentWrapper>{children}</ContentWrapper>
@@ -114,7 +124,7 @@ function Document({
         <ScrollRestoration />
         <Scripts />
         {process.env.NODE_ENV === "development" && <LiveReload />}
-      </body>
+      </Body>
     </html>
   );
 }
@@ -128,4 +138,11 @@ const ContentWrapper = styled(LimitMaxWidth)`
   flex: 1;
 
   background-color: var(--color-secondary);
+`;
+
+const Body = styled.body`
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
 `;

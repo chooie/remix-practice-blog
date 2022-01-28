@@ -1,7 +1,7 @@
 // @ts-ignore
 import feather from "feather-icons";
 import React from "react";
-import { Form, useLoaderData } from "remix";
+import { Form, useTransition, useLoaderData } from "remix";
 import styled from "styled-components";
 import invariant from "tiny-invariant";
 
@@ -9,10 +9,36 @@ import invariant from "tiny-invariant";
 import VisuallyHidden from "~/components/VisuallyHidden";
 import * as constants from "~/constants";
 
-export default function LightAndDarkThemeSwitcher() {
+function useShouldUseDarkTheme() {
   const loaderData = useLoaderData();
 
-  const useDarkTheme = loaderData?.useDarkTheme;
+  const [shouldUseDarkTheme, setUseDarkTheme] = React.useState<
+    boolean | undefined
+  >(loaderData.useDarkTheme);
+
+  React.useEffect(() => {
+    if (shouldUseDarkTheme === undefined) {
+      const userHasDarkModePreference = window.matchMedia(
+        constants.QUERIES.prefersDarkMode
+      ).matches;
+
+      if (userHasDarkModePreference) {
+        setUseDarkTheme(true);
+      }
+    } else {
+      setUseDarkTheme(loaderData.useDarkTheme);
+    }
+  }, [loaderData.useDarkTheme]);
+
+  return [shouldUseDarkTheme, setUseDarkTheme];
+}
+
+export default function LightAndDarkThemeSwitcher() {
+  const transition = useTransition();
+
+  const isNotBusy = transition.state === "idle";
+
+  const [shouldUseDarkTheme] = useShouldUseDarkTheme();
 
   let currentUrl = "";
 
@@ -28,45 +54,43 @@ export default function LightAndDarkThemeSwitcher() {
     currentUrl = location;
   }
 
+  let button = (
+    <ButtonWrapper title="Select dark theme">
+      <input id="dark-theme" type="hidden" name="theme" value="dark" />
+      <VisuallyHidden>
+        <label htmlFor="dark-theme">Current theme: Dark</label>
+      </VisuallyHidden>
+      <ThemeButton isNotBusy={isNotBusy} />
+      <Visual className="visual light" dangerouslySetInnerHTML={sun()} />
+    </ButtonWrapper>
+  );
+
+  if (shouldUseDarkTheme) {
+    button = (
+      <ButtonWrapper title="Select light theme">
+        <input id="light-theme" type="hidden" name="theme" value="light" />
+        <VisuallyHidden>
+          <label htmlFor="light-theme">Current theme: Light</label>
+        </VisuallyHidden>
+        <ThemeButton isNotBusy={isNotBusy} />
+        <Visual className="visual dark" dangerouslySetInnerHTML={moon()} />
+      </ButtonWrapper>
+    );
+  }
+
   return (
     <ThemeForm action="theme-switcher" method="post">
       <input type="hidden" name="browserLocation" value={currentUrl} />
-      <RadioWrapper title="Select light theme">
-        <ThemeRadioButton useDarkTheme={!useDarkTheme} value="light" />
-        <Visual className="visual light" dangerouslySetInnerHTML={sun()} />
-        <VisuallyHidden>
-          <label htmlFor="light-theme">Light</label>
-        </VisuallyHidden>
-      </RadioWrapper>
-      <RadioWrapper title="Select dark theme">
-        <ThemeRadioButton useDarkTheme={useDarkTheme} value="dark" />
-        <Visual className="visual dark" dangerouslySetInnerHTML={moon()} />
-        <VisuallyHidden>
-          <label htmlFor="dark-theme">Dark</label>
-        </VisuallyHidden>
-      </RadioWrapper>
-      <noscript>
-        <button type="submit">Choose</button>
-      </noscript>
+      {button}
     </ThemeForm>
   );
 }
 
-interface ThemeRadioButtonProps {
-  useDarkTheme: boolean;
-  value: "light" | "dark";
+interface ThemeButtonProps {
+  isNotBusy: boolean;
 }
-function ThemeRadioButton({ useDarkTheme, value }: ThemeRadioButtonProps) {
-  return (
-    <RadioButton
-      type="radio"
-      id="dark-theme"
-      name="theme"
-      value={value}
-      defaultChecked={useDarkTheme}
-      onChange={submitForm}
-    />
-  );
+function ThemeButton({ isNotBusy }: ThemeButtonProps) {
+  return <SubmitButton type="submit" disabled={!isNotBusy}></SubmitButton>;
 }
 
 function sun() {
@@ -77,12 +101,6 @@ function moon() {
   return { __html: feather.icons.moon.toSvg() };
 }
 
-function submitForm(event: React.ChangeEvent) {
-  const parentForm = event.currentTarget.closest("form");
-  invariant(parentForm instanceof HTMLFormElement, "Parent must be a form");
-  parentForm.submit();
-}
-
 const ThemeForm = styled(Form)`
   padding: 4px;
 
@@ -91,7 +109,7 @@ const ThemeForm = styled(Form)`
   gap: 8px;
 `;
 
-const RadioWrapper = styled.span`
+const ButtonWrapper = styled.span`
   position: relative;
   display: inline-block;
 
@@ -112,9 +130,18 @@ const Visual = styled.span`
   justify-content: center;
 
   border-radius: 50%;
+  background-color: ${constants.COLORS.primary2};
+
+  &.light {
+    color: hsl(55deg 95% 57%);
+  }
+
+  &.dark {
+    color: ${constants.COLORS.gray[800]};
+  }
 `;
 
-const RadioButton = styled.input`
+const SubmitButton = styled.input`
   cursor: pointer;
   position: absolute;
   left: 0;
@@ -127,17 +154,5 @@ const RadioButton = styled.input`
   &:focus-visible + .visual {
     outline: 1px dotted #212121;
     outline: 5px auto -webkit-focus-ring-color;
-  }
-
-  &:checked ~ .visual {
-    background-color: ${constants.COLORS.primary2};
-
-    &.light {
-      color: hsl(55deg 95% 57%);
-    }
-
-    &.dark {
-      color: ${constants.COLORS.gray[800]};
-    }
   }
 `;

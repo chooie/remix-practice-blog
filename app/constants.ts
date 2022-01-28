@@ -51,4 +51,5 @@ export const QUERIES = {
   hasFineCursor,
   motionAllowed,
   hasHoverAndMotionAllowed: `${hasHover} and ${motionAllowed}`,
+  prefersDarkMode: `(prefers-color-scheme: dark)`,
 };

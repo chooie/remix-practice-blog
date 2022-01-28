@@ -24,11 +24,13 @@ body {
 
   --color-text: var(--color-gray-50);
 
-  &.dark-theme {
-    ${nightThemeColors}
+  @media ${constants.QUERIES.prefersDarkMode} {
+    &:not(.light-theme) {
+      ${nightThemeColors}
+    }
   }
 
-  @media (prefers-color-scheme: dark) {
+  &.dark-theme {
     ${nightThemeColors}
   }
 }
