@@ -2,6 +2,7 @@ import { useCatch, useLoaderData, useParams } from "remix";
 import type { LoaderFunction } from "remix";
 import invariant from "tiny-invariant";
 
+import LimitMaxWidth from "~/components/LimitMaxWidth";
 import { getPost } from "~/post";
 
 export const loader: LoaderFunction = async ({ params }) => {
@@ -19,9 +20,9 @@ export const loader: LoaderFunction = async ({ params }) => {
 export default function PostSlug() {
   const post = useLoaderData();
   return (
-    <div>
+    <LimitMaxWidth maxWidth="80ch">
       <div dangerouslySetInnerHTML={{ __html: post.html }} />
-    </div>
+    </LimitMaxWidth>
   );
 }
 

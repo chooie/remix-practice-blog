@@ -1,3 +1,9 @@
+import LimitMaxWidth from "~/components/LimitMaxWidth";
+
+export default function Layout({ children }) {
+  return <LimitMaxWidth maxWidth="80ch">{children}</LimitMaxWidth>;
+}
+
 # This is a test of MDX
 
 import Test from "~/Test";

@@ -1,6 +1,8 @@
 import { Link } from "remix";
 import styled from "styled-components";
 
+import LimitMaxWidth from "~/components/LimitMaxWidth";
+
 export default function Index() {
   return (
     <Wrapper>
@@ -18,7 +20,9 @@ export default function Index() {
   );
 }
 
-const Wrapper = styled.div`
+const Wrapper = styled(LimitMaxWidth)`
+  flex: 1;
+
   display: flex;
   flex-direction: column;
 `;

@@ -13,7 +13,7 @@ import type { LoaderFunction } from "remix";
 import styled from "styled-components";
 
 import { userPreferences } from "~/cookies";
-import LimitMaxWidth from "~/components/LimitMaxWidth";
+import * as constants from "~/constants";
 import Footer from "~/Footer";
 import GlobalLoadingSpinner from "~/GlobalLoadingSpinner";
 import Navbar from "~/Navbar";
@@ -134,10 +134,13 @@ const Root = styled.div`
   flex-direction: column;
 `;
 
-const ContentWrapper = styled(LimitMaxWidth)`
+const ContentWrapper = styled.div`
   flex: 1;
 
-  background-color: var(--color-secondary);
+  display: flex;
+  flex-direction: column;
+
+  background-color: ${constants.COLORS.secondary};
 `;
 
 const Body = styled.body`

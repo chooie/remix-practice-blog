@@ -79,7 +79,7 @@ export default function LightAndDarkThemeSwitcher() {
   }
 
   return (
-    <ThemeForm action="theme-switcher" method="post">
+    <ThemeForm action="/theme-switcher" method="post">
       <input type="hidden" name="browserLocation" value={currentUrl} />
       {button}
     </ThemeForm>

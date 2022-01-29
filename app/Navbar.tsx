@@ -4,7 +4,6 @@ import styled from "styled-components";
 import * as constants from "~/constants";
 
 import LimitMaxWidth from "~/components/LimitMaxWidth";
-import LightAndDarkThemeSwitcher from "~/components/LightAndDarkThemeSwitcher";
 
 interface Props {
   reloadDocument: boolean;
@@ -26,9 +25,6 @@ export default function Navbar({ reloadDocument }: Props) {
           <ActiveMarker className="chooie-marker" />
         </NavLinkWrapper>
         <MiddleDivider />
-        <NavLinkWrapper>
-          <LightAndDarkThemeSwitcher />
-        </NavLinkWrapper>
         <NavLinkWrapper>
           <MyNavLink reloadDocument={reloadDocument} to="/admin">
             Admin

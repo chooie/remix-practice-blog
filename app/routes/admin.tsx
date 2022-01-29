@@ -5,6 +5,7 @@ import type { ActionFunction } from "remix";
 import styled from "styled-components";
 import invariant from "tiny-invariant";
 
+import LimitMaxWidth from "~/components/LimitMaxWidth";
 import * as constants from "~/constants";
 import { getPosts, deletePost } from "~/post";
 import type { Post } from "~/post";
@@ -27,7 +28,7 @@ export const action: ActionFunction = async ({ request }) => {
 export default function Admin() {
   const posts = useLoaderData<Post[]>();
   return (
-    <div>
+    <LimitMaxWidth>
       <h1>Admin</h1>
       <Wrapper>
         <Nav>
@@ -47,7 +48,7 @@ export default function Admin() {
           <Outlet />
         </Main>
       </Wrapper>
-    </div>
+    </LimitMaxWidth>
   );
 }
 

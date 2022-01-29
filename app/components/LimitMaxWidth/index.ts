@@ -1,1 +1,1 @@
-export { default } from "./LimitMaxWidth";
+export { default, FullBleed } from "./LimitMaxWidth";

@@ -3,6 +3,8 @@ import { Link, useLoaderData } from "remix";
 import { getPosts } from "~/post";
 import type { Post } from "~/post";
 
+import LimitMaxWidth, { FullBleed } from "~/components/LimitMaxWidth";
+
 export const loader = async () => {
   return await getPosts();
 };
@@ -10,8 +12,12 @@ export const loader = async () => {
 export default function Posts() {
   const posts = useLoaderData<Post[]>();
   return (
-    <div>
-      <h1>Posts</h1>
+    <LimitMaxWidth maxWidth="80ch">
+      <FullBleed style={{ background: "red" }}>
+        <LimitMaxWidth maxWidth="80ch">
+          <h1>Posts</h1>
+        </LimitMaxWidth>
+      </FullBleed>
       <ul>
         {posts.map((post) => (
           <li key={post.slug}>
@@ -19,6 +25,16 @@ export default function Posts() {
           </li>
         ))}
       </ul>
-    </div>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+        sagittis ligula in purus iaculis, non semper dui euismod. Pellentesque
+        luctus posuere augue, a tincidunt enim eleifend id. Nunc at ligula sed
+        libero placerat vehicula. In lobortis, erat ut elementum viverra, sem
+        arcu consequat libero, non auctor risus arcu nec dui. Sed tempus feugiat
+        nibh sed efficitur. Donec tristique orci metus, at congue eros gravida
+        id. Mauris ultrices accumsan sapien non blandit. Integer in sem libero.
+        Etiam a viverra nunc, ut.
+      </p>
+    </LimitMaxWidth>
   );
 }
