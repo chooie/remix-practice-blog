@@ -20,6 +20,7 @@ import Navbar from "~/Navbar";
 import colorStyles from "~/styles/colors.css";
 import fontStyles from "~/styles/fonts.css";
 import GlobalStyles from "~/styles/GlobalStyles";
+import LimitMaxWidth from "./components/LimitMaxWidth";
 
 export function meta() {
   return { title: "Charlie's remix blog" };
@@ -57,11 +58,12 @@ export function CatchBoundary() {
       reloadDocument={true}
       title={`${caught.status} ${caught.statusText}`}
     >
-      <main className="error-container">
+      <ErrorWrapper as="main" maxWidth="80ch">
         <h1>
           {caught.status} {caught.statusText}
         </h1>
-      </main>
+        <a href="/">Go home</a>
+      </ErrorWrapper>
     </Document>
   );
 }
@@ -69,10 +71,10 @@ export function CatchBoundary() {
 export function ErrorBoundary({ error }: { error: Error }) {
   return (
     <Document reloadDocument={true} title="Uh-oh!">
-      <main className="error-container">
+      <ErrorWrapper as="main" maxWidth="80ch">
         <h1>App Error</h1>
         <pre>{error.message}</pre>
-      </main>
+      </ErrorWrapper>
     </Document>
   );
 }
@@ -128,6 +130,10 @@ function Document({
     </html>
   );
 }
+
+const ErrorWrapper = styled(LimitMaxWidth)`
+  text-align: center;
+`;
 
 const Root = styled.div`
   display: flex;
