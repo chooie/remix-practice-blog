@@ -26,6 +26,10 @@ export default function Settings() {
 }
 
 const Item = styled.div`
+  width: max-content;
+
+  justify-self: center;
+
   display: flex;
   align-items: center;
   gap: 32px;

@@ -1,6 +1,6 @@
 // @ts-ignore
-import feather from "feather-icons";
 import React from "react";
+import { Moon, Sun } from "react-feather";
 import { Form, useTransition, useLoaderData } from "remix";
 import styled from "styled-components";
 import invariant from "tiny-invariant";
@@ -61,7 +61,9 @@ export default function LightAndDarkThemeSwitcher() {
         <label htmlFor="dark-theme">Current theme: Dark</label>
       </VisuallyHidden>
       <ThemeButton isNotBusy={isNotBusy} />
-      <Visual className="visual light" dangerouslySetInnerHTML={sun()} />
+      <Visual className="visual light">
+        <Sun />
+      </Visual>
     </ButtonWrapper>
   );
 
@@ -73,7 +75,9 @@ export default function LightAndDarkThemeSwitcher() {
           <label htmlFor="light-theme">Current theme: Light</label>
         </VisuallyHidden>
         <ThemeButton isNotBusy={isNotBusy} />
-        <Visual className="visual dark" dangerouslySetInnerHTML={moon()} />
+        <Visual className="visual dark">
+          <Moon />
+        </Visual>
       </ButtonWrapper>
     );
   }
@@ -91,14 +95,6 @@ interface ThemeButtonProps {
 }
 function ThemeButton({ isNotBusy }: ThemeButtonProps) {
   return <SubmitButton type="submit" disabled={!isNotBusy}></SubmitButton>;
-}
-
-function sun() {
-  return { __html: feather.icons.sun.toSvg() };
-}
-
-function moon() {
-  return { __html: feather.icons.moon.toSvg() };
 }
 
 const ThemeForm = styled(Form)`
