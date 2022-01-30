@@ -12,15 +12,16 @@ import {
 import type { LoaderFunction } from "remix";
 import styled from "styled-components";
 
-import { userPreferences } from "~/cookies";
-import * as constants from "~/constants";
-import Footer from "~/Footer";
+import Footer from "~/components/Footer";
 import GlobalLoadingSpinner from "~/GlobalLoadingSpinner";
-import Navbar from "~/Navbar";
+import LimitMaxWidth from "~/components/LimitMaxWidth";
+import Navbar from "~/components/Navbar";
+import * as constants from "~/constants";
+import { userPreferences } from "~/cookies";
 import colorStyles from "~/styles/colors.css";
 import fontStyles from "~/styles/fonts.css";
 import GlobalStyles from "~/styles/GlobalStyles";
-import LimitMaxWidth from "./components/LimitMaxWidth";
+import { isUserAnAdmin } from "~/utils/session.server";
 
 export function meta() {
   return { title: "Charlie's remix blog" };
@@ -34,11 +35,14 @@ export function links() {
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
+  const userIsAdmin = await isUserAnAdmin(request);
+
   const cookieHeader = request.headers.get("Cookie");
   const cookie = (await userPreferences.parse(cookieHeader)) || {};
 
   return {
     useDarkTheme: cookie.useDarkTheme,
+    userIsAdmin,
   };
 };
 
@@ -93,6 +97,7 @@ function Document({
   const loaderData = useLoaderData();
 
   const useDarkTheme = loaderData?.useDarkTheme;
+  const userIsAdmin = loaderData?.userIsAdmin || false;
 
   let themeClass;
 
@@ -117,7 +122,10 @@ function Document({
       </head>
       <Body className={themeClass}>
         <Root id="root">
-          <Navbar reloadDocument={reloadDocument}></Navbar>
+          <Navbar
+            reloadDocument={reloadDocument}
+            userIsAdmin={userIsAdmin}
+          ></Navbar>
           <ContentWrapper>{children}</ContentWrapper>
           <Footer />
         </Root>

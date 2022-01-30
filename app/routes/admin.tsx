@@ -1,7 +1,7 @@
 import { DialogOverlay, DialogContent } from "@reach/dialog";
 import React from "react";
 import { Form, Link, redirect, Outlet, useLoaderData } from "remix";
-import type { ActionFunction } from "remix";
+import type { ActionFunction, LoaderFunction } from "remix";
 import styled from "styled-components";
 import invariant from "tiny-invariant";
 
@@ -10,7 +10,14 @@ import * as constants from "~/constants";
 import { getPosts, deletePost } from "~/post";
 import type { Post } from "~/post";
 
-export const loader = async () => {
+import { requireUserId, getUserId } from "~/utils/session.server";
+
+export const loader: LoaderFunction = async ({ request }) => {
+  const userId = await getUserId(request);
+  if (!userId) {
+    throw new Response("Unauthorized", { status: 401 });
+  }
+
   return await getPosts();
 };
 

@@ -48,6 +48,18 @@ export function getUserSession(request: Request) {
   return storage.getSession(request.headers.get("Cookie"));
 }
 
+export async function isUserAnAdmin(request: Request) {
+  const user = await getUser(request);
+
+  if (!user) {
+    return false;
+  }
+
+  const isAdmin = user.isAdmin;
+
+  return isAdmin;
+}
+
 export async function getUserId(request: Request) {
   const session = await getUserSession(request);
   const userId = session.get("userId");

@@ -7,8 +7,10 @@ import * as constants from "~/constants";
 
 interface Props {
   reloadDocument: boolean;
+  userIsAdmin: boolean;
 }
-export default function Navbar({ reloadDocument }: Props) {
+
+export default function Navbar({ reloadDocument, userIsAdmin }: Props) {
   return (
     <Wrapper as="nav">
       <InnerWrapper>
@@ -32,12 +34,14 @@ export default function Navbar({ reloadDocument }: Props) {
         <NavLinkWrapper>
           <LightAndDarkThemeSwitcher />
         </NavLinkWrapper>
-        <NavLinkWrapper>
-          <MyNavLink reloadDocument={reloadDocument} to="/admin">
-            Admin
-          </MyNavLink>
-          <ActiveMarker className="chooie-marker" />
-        </NavLinkWrapper>
+        {userIsAdmin && (
+          <NavLinkWrapper>
+            <MyNavLink reloadDocument={reloadDocument} to="/admin">
+              Admin
+            </MyNavLink>
+            <ActiveMarker className="chooie-marker" />
+          </NavLinkWrapper>
+        )}
       </InnerWrapper>
     </Wrapper>
   );
