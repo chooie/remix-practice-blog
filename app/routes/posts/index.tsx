@@ -21,7 +21,9 @@ export default function Posts() {
       <ul>
         {posts.map((post) => (
           <li key={post.slug}>
-            <Link to={post.slug}>{post.title}</Link>
+            <Link prefetch="intent" to={post.slug}>
+              {post.title}
+            </Link>
           </li>
         ))}
       </ul>

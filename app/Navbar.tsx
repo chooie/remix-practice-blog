@@ -13,13 +13,17 @@ export default function Navbar({ reloadDocument }: Props) {
     <Wrapper as="nav">
       <InnerWrapper>
         <NavLinkWrapper>
-          <MyNavLink reloadDocument={reloadDocument} to="/">
+          <MyNavLink prefetch="intent" reloadDocument={reloadDocument} to="/">
             Home
           </MyNavLink>
           <ActiveMarker className="chooie-marker" />
         </NavLinkWrapper>
         <NavLinkWrapper>
-          <MyNavLink reloadDocument={reloadDocument} to="/posts">
+          <MyNavLink
+            prefetch="intent"
+            reloadDocument={reloadDocument}
+            to="/posts"
+          >
             Posts
           </MyNavLink>
           <ActiveMarker className="chooie-marker" />
