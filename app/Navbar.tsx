@@ -1,9 +1,9 @@
 import { NavLink } from "remix";
 import styled from "styled-components";
 
-import * as constants from "~/constants";
-
+import LightAndDarkThemeSwitcher from "~/components/LightAndDarkThemeSwitcher";
 import LimitMaxWidth from "~/components/LimitMaxWidth";
+import * as constants from "~/constants";
 
 interface Props {
   reloadDocument: boolean;
@@ -25,6 +25,9 @@ export default function Navbar({ reloadDocument }: Props) {
           <ActiveMarker className="chooie-marker" />
         </NavLinkWrapper>
         <MiddleDivider />
+        <NavLinkWrapper>
+          <LightAndDarkThemeSwitcher />
+        </NavLinkWrapper>
         <NavLinkWrapper>
           <MyNavLink reloadDocument={reloadDocument} to="/admin">
             Admin

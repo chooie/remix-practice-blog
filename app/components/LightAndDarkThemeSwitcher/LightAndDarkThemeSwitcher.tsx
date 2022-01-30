@@ -12,11 +12,15 @@ import * as constants from "~/constants";
 function useShouldUseDarkTheme() {
   const loaderData = useLoaderData();
 
+  // loaderData can be undefined in the case that our app responds with a 404
+  const useDarkTheme = loaderData?.useDarkTheme;
+
   const [shouldUseDarkTheme, setUseDarkTheme] = React.useState<
     boolean | undefined
-  >(loaderData.useDarkTheme);
+  >(useDarkTheme);
 
   React.useEffect(() => {
+    // React.useEffect only runs in the browser
     if (shouldUseDarkTheme === undefined) {
       const userHasDarkModePreference = window.matchMedia(
         constants.QUERIES.prefersDarkMode
@@ -26,9 +30,9 @@ function useShouldUseDarkTheme() {
         setUseDarkTheme(true);
       }
     } else {
-      setUseDarkTheme(loaderData.useDarkTheme);
+      setUseDarkTheme(useDarkTheme);
     }
-  }, [loaderData.useDarkTheme]);
+  }, [useDarkTheme]);
 
   return [shouldUseDarkTheme, setUseDarkTheme];
 }
@@ -36,7 +40,10 @@ function useShouldUseDarkTheme() {
 export default function LightAndDarkThemeSwitcher() {
   const transition = useTransition();
 
-  const isNotBusy = transition.state === "idle";
+  const isSubmitting =
+    transition.submission?.formData.get("_action") === "toggleTheme";
+
+  const isBusy = transition.state !== "idle" && isSubmitting;
 
   const [shouldUseDarkTheme] = useShouldUseDarkTheme();
 
@@ -60,7 +67,7 @@ export default function LightAndDarkThemeSwitcher() {
       <VisuallyHidden>
         <label htmlFor="dark-theme">Current theme: Dark</label>
       </VisuallyHidden>
-      <ThemeButton isNotBusy={isNotBusy} />
+      <ThemeButton isBusy={isBusy} />
       <Visual className="visual light">
         <Sun />
       </Visual>
@@ -74,7 +81,7 @@ export default function LightAndDarkThemeSwitcher() {
         <VisuallyHidden>
           <label htmlFor="light-theme">Current theme: Light</label>
         </VisuallyHidden>
-        <ThemeButton isNotBusy={isNotBusy} />
+        <ThemeButton isBusy={isBusy} />
         <Visual className="visual dark">
           <Moon />
         </Visual>
@@ -91,10 +98,17 @@ export default function LightAndDarkThemeSwitcher() {
 }
 
 interface ThemeButtonProps {
-  isNotBusy: boolean;
+  isBusy: boolean;
 }
-function ThemeButton({ isNotBusy }: ThemeButtonProps) {
-  return <SubmitButton type="submit" disabled={!isNotBusy}></SubmitButton>;
+function ThemeButton({ isBusy }: ThemeButtonProps) {
+  return (
+    <SubmitButton
+      type="submit"
+      disabled={isBusy}
+      name="_action"
+      value="toggleTheme"
+    ></SubmitButton>
+  );
 }
 
 const ThemeForm = styled(Form)`
@@ -120,21 +134,13 @@ const Visual = styled.span`
   top: 0;
   height: 100%;
   width: 100%;
+  border-radius: 50%;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  border-radius: 50%;
   background-color: ${constants.COLORS.primary2};
-
-  &.light {
-    color: hsl(55deg 95% 57%);
-  }
-
-  &.dark {
-    color: ${constants.COLORS.gray[800]};
-  }
 `;
 
 const SubmitButton = styled.input`
@@ -144,11 +150,26 @@ const SubmitButton = styled.input`
   top: 0;
   height: 100%;
   width: 100%;
+  border-radius: 50%;
 
   opacity: 0;
+
+  @media ${constants.QUERIES.hasFineCursor} {
+    &:hover + .visual {
+      filter: brightness(1.2);
+    }
+  }
 
   &:focus-visible + .visual {
     outline: 1px dotted #212121;
     outline: 5px auto -webkit-focus-ring-color;
+  }
+
+  &[disabled] {
+    cursor: revert;
+
+    & + .visual {
+      filter: brightness(0.5);
+    }
   }
 `;
