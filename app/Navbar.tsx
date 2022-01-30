@@ -98,9 +98,9 @@ const MyNavLink = styled(NavLink)`
 
     It should be:
 
-    &.active + ${ActiveMarker}
+    &.active ~ ${ActiveMarker}
   */
-  &.active + .chooie-marker {
+  &.active ~ .chooie-marker {
     opacity: 1;
   }
 
