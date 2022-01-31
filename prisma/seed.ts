@@ -8,10 +8,10 @@ const prisma = new PrismaClient();
 async function seed() {
   const kody = await prisma.user.create({
     data: {
-      username: "kody",
-      // this is a hashed version of "twixrox"
+      username: "chooie",
+      // Password is my go-to insecure password
       passwordHash:
-        "$2b$10$K7L1OJ45/4Y2nIvhRVpCe.FSmhDdWoXehVzJptJ/op0lSsvqNu/1u",
+        "$2a$10$B7aQc5Nc/B3T2J9te.LiRuxa1.8N/i50oLgGz2c2HeURwc6doJS5q",
       isAdmin: true,
     },
   });

@@ -37,6 +37,11 @@ export default function Admin() {
   return (
     <LimitMaxWidth>
       <h1>Admin</h1>
+      <form action="/logout" method="post">
+        <button type="submit" className="button">
+          Logout
+        </button>
+      </form>
       <Wrapper>
         <Nav>
           <List>

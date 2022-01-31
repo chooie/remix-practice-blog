@@ -31,7 +31,7 @@ if (!sessionSecret) {
 
 const storage = createCookieSessionStorage({
   cookie: {
-    name: "RJ_session",
+    name: "IIT_session",
     // normally you want this to be `secure: true`
     // but that doesn't work on localhost for Safari
     // https://web.dev/when-to-use-local-https/
@@ -98,6 +98,7 @@ export async function getUser(request: Request) {
 
 export async function logout(request: Request) {
   const session = await storage.getSession(request.headers.get("Cookie"));
+
   return redirect("/login", {
     headers: {
       "Set-Cookie": await storage.destroySession(session),

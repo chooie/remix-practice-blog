@@ -41,6 +41,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   if (user) {
     return redirect("/admin");
   }
+  return null;
 };
 
 type ActionData = {
