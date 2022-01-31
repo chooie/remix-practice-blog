@@ -1,13 +1,14 @@
-import type { Tweet } from "@prisma/client";
+import type { Thought } from "@prisma/client";
 import { useLoaderData } from "remix";
 import type { LoaderFunction } from "remix";
 
+import LimitMaxWidth from "~/components/LimitMaxWidth";
 import { db } from "~/utils/db.server";
 
-type LoaderData = { tweets: Tweet[] };
+type LoaderData = { thoughts: Thought[] };
 export let loader: LoaderFunction = async () => {
   const data: LoaderData = {
-    tweets: await db.tweet.findMany(),
+    thoughts: await db.thought.findMany(),
   };
   return data;
 };
@@ -15,10 +16,13 @@ export let loader: LoaderFunction = async () => {
 export default function DbTest() {
   const data = useLoaderData<LoaderData>();
   return (
-    <ul>
-      {data.tweets.map((tweet) => (
-        <li>{tweet.content}</li>
-      ))}
-    </ul>
+    <LimitMaxWidth maxWidth="80ch">
+      <h1>Thoughts</h1>
+      <ul>
+        {data.thoughts.map((thought) => (
+          <li>{thought.content}</li>
+        ))}
+      </ul>
+    </LimitMaxWidth>
   );
 }
