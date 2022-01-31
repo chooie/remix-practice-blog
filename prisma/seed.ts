@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 })();
 
 async function seed() {
-  const kody = await prisma.user.create({
+  const user = await prisma.user.create({
     data: {
       username: "chooie",
       // Password is my go-to insecure password
@@ -16,14 +16,14 @@ async function seed() {
     },
   });
   await Promise.all(
-    getTweets().map((tweet) => {
-      const data = { userId: kody.id, ...tweet };
-      return prisma.tweet.create({ data });
+    getThoughts().map((thought) => {
+      const data = { userId: user.id, ...thought };
+      return prisma.thought.create({ data });
     })
   );
 }
 
-function getTweets() {
+function getThoughts() {
   return [
     {
       slug: "road-worker",
