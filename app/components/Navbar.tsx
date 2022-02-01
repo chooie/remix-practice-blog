@@ -24,9 +24,9 @@ export default function Navbar({ reloadDocument, userIsAdmin }: Props) {
           <MyNavLink
             prefetch="intent"
             reloadDocument={reloadDocument}
-            to="/posts"
+            to="/blog"
           >
-            Posts
+            Blog
           </MyNavLink>
           <ActiveMarker className="chooie-marker" />
         </NavLinkWrapper>

@@ -48,7 +48,7 @@ export default function Admin() {
             {posts.map((post) => (
               <ListItem key={post.slug}>
                 <LinkWrapper>
-                  <Link to={`/posts/${post.slug}`}>{post.title}</Link>
+                  <Link to={`/blog/posts/${post.slug}`}>{post.title}</Link>
                   <Delete post={post} />
                   <Link to={`${post.slug}`}>Edit</Link>
                 </LinkWrapper>

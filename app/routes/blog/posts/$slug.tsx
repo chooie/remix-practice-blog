@@ -1,9 +1,10 @@
-import { useCatch, useLoaderData, useParams } from "remix";
+import { Link, useCatch, useLoaderData, useParams } from "remix";
 import type { LoaderFunction } from "remix";
 import styled from "styled-components";
 import invariant from "tiny-invariant";
 
 import LimitMaxWidth from "~/components/LimitMaxWidth";
+import * as constants from "~/constants";
 import { getPost } from "~/post";
 
 export const loader: LoaderFunction = async ({ params }) => {
@@ -19,13 +20,36 @@ export const loader: LoaderFunction = async ({ params }) => {
 };
 
 export default function PostSlug() {
+  const params = useParams();
   const post = useLoaderData();
   return (
     <LimitMaxWidth maxWidth="80ch">
-      <div dangerouslySetInnerHTML={{ __html: post.html }} />
+      <BreadcrumbWrapper>
+        <Link to="/blog/posts">Go back to posts</Link>
+        {/* <ChevronWrapper>{`>`}</ChevronWrapper> */}
+        {/* <Link to={`/blog/posts/${params.slug}`}>{params.slug}</Link> */}
+        {/* <span>{params.slug}</span> */}
+      </BreadcrumbWrapper>
+
+      <ContentWrapper dangerouslySetInnerHTML={{ __html: post.html }} />
     </LimitMaxWidth>
   );
 }
+
+const BreadcrumbWrapper = styled.div`
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid ${constants.COLORS.primary1};
+`;
+
+const ChevronWrapper = styled.span`
+  margin: 0 8px;
+  color: ${constants.COLORS.gray[400]};
+`;
+
+const ContentWrapper = styled.div`
+  margin: 16px 0;
+`;
 
 export function CatchBoundary() {
   const caught = useCatch();
@@ -34,7 +58,7 @@ export function CatchBoundary() {
       <h1>
         {caught.status} {caught.statusText}
       </h1>
-      <a href="/posts">Go back to posts</a>
+      <a href="/blog/posts">Go back to posts</a>
     </ErrorWrapper>
   );
 }

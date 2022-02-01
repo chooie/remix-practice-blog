@@ -13,9 +13,9 @@ export default function Posts() {
   const posts = useLoaderData<Post[]>();
   return (
     <LimitMaxWidth maxWidth="80ch">
-      <FullBleed style={{ background: "red" }}>
+      <FullBleed>
         <LimitMaxWidth maxWidth="80ch">
-          <h1>Posts</h1>
+          <h1>All Posts</h1>
         </LimitMaxWidth>
       </FullBleed>
       <ul>
